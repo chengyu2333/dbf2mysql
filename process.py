@@ -1,6 +1,7 @@
 import time
 import config
 import os
+import log
 from dbfread import DBF
 from map_dict import map_dict
 import req
@@ -14,7 +15,6 @@ def sync():
     if req.get_db_file(config.db_url, config.db_file):
         table = DBF(config.db_file, char_decode_errors="ignore")
         data = []
-        print("total: ",len(table))
 
         # for record in table:
         #     for field in record:
@@ -35,13 +35,14 @@ def sync():
                             config.map_rule['strict'],
                             config.map_rule['lower'],
                             process_key=p_key)
-        print("total record: ",total)
+        log.log_success("total record: " + str(total))
         try:
             req.post_data(config.post_url, new_data)
         except Exception as e:
             print(str(e))
             raise
-
+    else:
+        pass
 
 
 

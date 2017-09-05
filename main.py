@@ -1,5 +1,6 @@
 import time
 import config
+import log
 import process
 
 
@@ -28,7 +29,7 @@ def cycle_exec(func, cycle_time=10):
         end_time = time.time()
         sleep_time = config.cycle_time - (end_time - start_time)
         sleep_time = sleep_time if sleep_time>=0 else 0
-        print("process finised,spend time:", end_time - start_time)
+        log.log_success("process finised,spend time:" + str(end_time - start_time))
         print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
 
@@ -41,7 +42,7 @@ def run():
         end_time = time.time()
         sleep_time = config.cycle_time - (end_time - start_time)
         sleep_time = sleep_time if sleep_time>=0 else 0
-        print("process finised,spend time:", end_time - start_time)
+        log.log_success("process finised,spend time:" + str(end_time - start_time))
         print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
 

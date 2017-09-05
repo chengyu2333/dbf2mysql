@@ -13,7 +13,7 @@ import log
        wait_exponential_multiplier=config.slience_db_multiplier * 1000,
        wait_exponential_max=config.slience_db_multiplier_max * 1000)
 def get_db_file(db_url, db_file):
-    return True
+    # return True
 
     ctime_old = None
     if os.path.exists(db_file):
@@ -74,7 +74,6 @@ def post_retry(url, data, is_json=True):
             return requests.post(url, json=json.dumps(data), timeout=config.timeout_http)
         else:
             return requests.post(url, data=data, timeout=config.timeout_http)
-        print("ok")
     except Exception as e:
         print(str(e))
         raise

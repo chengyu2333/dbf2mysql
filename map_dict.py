@@ -1,4 +1,5 @@
 # map dict list
+
 def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, process_value=None):
     '''
     # for example:
