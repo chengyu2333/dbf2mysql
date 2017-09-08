@@ -1,11 +1,12 @@
 db_url = "http://183.60.7.32/nqhq.dbf"
 db_file = "nqhq.dbf"
 post_url = "http://api.chinaipo.com/markets/v1/rthq/"
-post_json = False
+post_url = "http://192.168.1.203:8004/markets/v1/rthq/"
+post_json = 0
 # http://www.chinaipo.com/data/hangqing/833027/833027.php
 
-cycle_time = 20  # 扫描周期
-enable_thread = True  # 启用线程
+cycle_time = 120  # 扫描周期
+enable_thread = False  # 启用线程
 thread_pool_size = 10  # 线程池大小
 cache_size = 10  # 缓存大小
 
@@ -67,3 +68,4 @@ map_rule = {
         "hqbsl5": "HQBSL5",
     }
 }
+print(map_rule['map'].keys())

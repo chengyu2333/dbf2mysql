@@ -10,9 +10,8 @@ def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, 
     # result:
         [{'uid': 123, 'username': 'chengyu'},{'ID': 001, 'username': 'user'}]
     '''
-    if exchange:
+    if strict and exchange:
         map_rule = dict(zip(map_rule.values(),map_rule.keys()))
-        print(map_rule)
     total = 0
     data_result = []
     for item in data_source:  # iteration data

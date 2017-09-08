@@ -6,14 +6,15 @@ import threadpool
 from retry import retry
 import config
 import log
+from database import DB
 
-
+SUCCESS_COUNT = 0
 # get db file,return is it newer
 @retry(stop_max_attempt_number=config.retry_db,
        wait_exponential_multiplier=config.slience_db_multiplier * 1000,
        wait_exponential_max=config.slience_db_multiplier_max * 1000)
 def get_db_file(db_url, db_file):
-    # return True
+    return True
 
     ctime_old = None
     if os.path.exists(db_file):
@@ -26,7 +27,7 @@ def get_db_file(db_url, db_file):
     else:
         return False
 
-
+db = DB()
 # batch post data to webservice
 def post_data_list(url, data_list):
     is_json = config.post_json
@@ -46,6 +47,8 @@ def post_data_list(url, data_list):
         else:  # single thread
             #post_except(url, data_list)
             for d in data_list:
+                # db.put_data(d)
+                # continue
                 res = post_except(url, d, is_json)
     except Exception:
         raise
@@ -53,12 +56,12 @@ def post_data_list(url, data_list):
 
 # post callback
 def finished(*args, **kwargs):
-    global COUNT
+    global SUCCESS_COUNT
     print("finished  ",args)
     if args[1]:
         print(args[1])
         if args[1].status_code == 201:
-            COUNT += 1
+            SUCCESS_COUNT += 1
         else:
             log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data data:%s"
                           % (args[1].status_code, args[1].text, args[0]))
@@ -69,11 +72,14 @@ def finished(*args, **kwargs):
        wait_exponential_multiplier=config.slience_http_multiplier*1000,
        wait_exponential_max=config.slience_http_multiplier_max*1000)
 def post_retry(url, data, is_json=False):
-    print("try…… ", end="")
     try:
         if is_json:
+            print("try…json… ", end="")
+            j = json.dumps(data)
+            print(type(j))
             return requests.post(url, json=json.dumps(data), timeout=config.timeout_http)
         else:
+            print("try…str… ", end="")
             return requests.post(url, data=data, timeout=config.timeout_http)
     except Exception as e:
         print(str(e))
