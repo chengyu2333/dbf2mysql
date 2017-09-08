@@ -28,7 +28,8 @@ def get_db_file(db_url, db_file):
 
 
 # batch post data to webservice
-def post_data(url, data_list):
+def post_data_list(url, data_list):
+    is_json = config.post_json
     try:
         # for d in data_list:
         #     print(d)
@@ -36,7 +37,7 @@ def post_data(url, data_list):
         if config.enable_thread:  # multi thread
             args = []
             for d in data_list:
-                args.append(([url, d], None))
+                args.append(([url, d, is_json], None))
             pool = threadpool.ThreadPool(config.thread_pool_size)
             reqs = threadpool.makeRequests(post_except, args, finished)
             [pool.putRequest(req) for req in reqs]
@@ -45,7 +46,7 @@ def post_data(url, data_list):
         else:  # single thread
             #post_except(url, data_list)
             for d in data_list:
-                res = post_except(url, d, True)
+                res = post_except(url, d, is_json)
     except Exception:
         raise
 
@@ -67,7 +68,7 @@ def finished(*args, **kwargs):
 @retry(stop_max_attempt_number=config.retry_http,
        wait_exponential_multiplier=config.slience_http_multiplier*1000,
        wait_exponential_max=config.slience_http_multiplier_max*1000)
-def post_retry(url, data, is_json=True):
+def post_retry(url, data, is_json=False):
     print("try…… ", end="")
     try:
         if is_json:
@@ -79,7 +80,7 @@ def post_retry(url, data, is_json=True):
         raise
 
 # have exception handle, for implement multi thread
-def post_except(url, data, is_json=True):
+def post_except(url, data, is_json=False):
     global SUCCESS_COUNT
     print("post_except:", url)
     try:

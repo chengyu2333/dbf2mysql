@@ -13,7 +13,7 @@ def p_key(key):
 
 def sync():
     if req.get_db_file(config.db_url, config.db_file):
-        table = DBF(config.db_file, char_decode_errors="ignore")
+        table = DBF(config.db_file, encoding="gbk", char_decode_errors="ignore")
         data = []
 
         # for record in table:
@@ -34,10 +34,11 @@ def sync():
                             config.map_rule['map'],
                             config.map_rule['strict'],
                             config.map_rule['lower'],
-                            process_key=p_key)
+                            process_key=p_key,
+                            exchange=config.map_rule['exchange'])
         log.log_success("total record: " + str(total))
         try:
-            req.post_data(config.post_url, new_data)
+            req.post_data_list(config.post_url, new_data)
         except Exception as e:
             print(str(e))
             raise

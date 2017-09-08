@@ -1,6 +1,6 @@
 # map dict list
 
-def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, process_value=None):
+def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, process_value=None, exchange=False):
     '''
     # for example:
     # data_source:
@@ -10,6 +10,9 @@ def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, 
     # result:
         [{'uid': 123, 'username': 'chengyu'},{'ID': 001, 'username': 'user'}]
     '''
+    if exchange:
+        map_rule = dict(zip(map_rule.values(),map_rule.keys()))
+        print(map_rule)
     total = 0
     data_result = []
     for item in data_source:  # iteration data
@@ -38,6 +41,10 @@ def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, 
                 new_key = process_key(new_key)
             if new_key:
                 row_temp[new_key] = item[key]
+                # if exchange:
+                #     row_temp[item[key]] = new_key
+                # else:
+                #     row_temp[new_key] = item[key]
         data_result.append(row_temp)
         total += 1
     return data_result, total
