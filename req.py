@@ -9,11 +9,14 @@ import log
 from database import DB
 
 SUCCESS_COUNT = 0
+
+
 # get db file,return is it newer
 @retry(stop_max_attempt_number=config.retry_db,
        wait_exponential_multiplier=config.slience_db_multiplier * 1000,
        wait_exponential_max=config.slience_db_multiplier_max * 1000)
 def get_db_file(db_url, db_file):
+
     return True
 
     ctime_old = None
@@ -28,6 +31,8 @@ def get_db_file(db_url, db_file):
         return False
 
 db = DB()
+
+
 # batch post data to webservice
 def post_data_list(url, data_list):
     is_json = config.post_json
@@ -55,7 +60,7 @@ def post_data_list(url, data_list):
 
 
 # post callback
-def finished(*args, **kwargs):
+def finished(*args):
     global SUCCESS_COUNT
     print("finished  ",args)
     if args[1]:
@@ -63,7 +68,7 @@ def finished(*args, **kwargs):
         if args[1].status_code == 201:
             SUCCESS_COUNT += 1
         else:
-            log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data data:%s"
+            log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data:%s"
                           % (args[1].status_code, args[1].text, args[0]))
 
 
@@ -85,6 +90,7 @@ def post_retry(url, data, is_json=False):
         print(str(e))
         raise
 
+
 # have exception handle, for implement multi thread
 def post_except(url, data, is_json=False):
     global SUCCESS_COUNT
@@ -94,9 +100,10 @@ def post_except(url, data, is_json=False):
         if res.status_code == 201:
             SUCCESS_COUNT += 1
         else:
-            log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data data:%s"
+            log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data:%s"
                           % (res.status_code, res.text, data))
         return res
     except Exception as e:
         log.log_error("server error:" + str(e) + "\ndata:" + str(data))
+        raise
 

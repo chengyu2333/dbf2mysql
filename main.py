@@ -18,7 +18,8 @@ def in_times(time,time_interval):
     else:
         return False
 
-# 周期执行某函数
+
+# 周期执行函数
 def cycle_exec(func, cycle_time=10):
     while True:
         start_time = time.time()
@@ -46,6 +47,5 @@ def run():
         print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
 
-# run()
-
-cycle_exec(process.sync, config.cycle_time)
+if __name__ == "__main__":
+    cycle_exec(process.sync, config.cycle_time)

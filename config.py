@@ -1,7 +1,6 @@
 db_url = "http://183.60.7.32/nqhq.dbf"
 db_file = "nqhq.dbf"
 post_url = "http://api.chinaipo.com/markets/v1/rthq/"
-post_url = "http://192.168.1.203:8004/markets/v1/rthq/"
 post_json = 0
 # http://www.chinaipo.com/data/hangqing/833027/833027.php
 
@@ -66,6 +65,7 @@ map_rule = {
         "hqbsl4": "HQBSL4",
         "hqbjw5": "HQBJW5",
         "hqbsl5": "HQBSL5",
+        "updated_at": "updated_at"
     }
 }
 print(map_rule['map'].keys())

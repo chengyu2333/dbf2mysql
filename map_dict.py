@@ -40,10 +40,6 @@ def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, 
                 new_key = process_key(new_key)
             if new_key:
                 row_temp[new_key] = item[key]
-                # if exchange:
-                #     row_temp[item[key]] = new_key
-                # else:
-                #     row_temp[new_key] = item[key]
         data_result.append(row_temp)
         total += 1
     return data_result, total

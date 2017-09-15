@@ -15,16 +15,16 @@ def sync():
     if req.get_db_file(config.db_url, config.db_file):
         table = DBF(config.db_file, encoding="gbk", char_decode_errors="ignore")
         data = []
-
-        # for record in table:
-        #     for field in record:
-        #         print(field, " ", end="")
-        #     print()
-        #     break
+        updated_at = ""
 
         # read record as dict to list
         for record in table:
+            if not updated_at:
+                updated_at = str(record['HQZQJC'])+str(record['HQCJBS'])
+                updated_at = time.strptime(updated_at,"%Y%m%d%H%M%S")
+                print("updated as:",time.strftime("%Y-%m-%dT%H:%M:%S",updated_at))
             temp_row = {}
+            temp_row['updated_at'] = time.strftime("%Y-%m-%dT%H:%M:%S",updated_at)
             for field in record:
                 temp_row[field] = record[field]
             data.append(temp_row)
@@ -42,8 +42,7 @@ def sync():
         except Exception as e:
             print(str(e))
             raise
-    else:
-        pass
+
 
 
 
