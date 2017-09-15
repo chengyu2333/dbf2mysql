@@ -23,6 +23,8 @@ def sync():
                 updated_at = str(record['HQZQJC'])+str(record['HQCJBS'])
                 updated_at = time.strptime(updated_at,"%Y%m%d%H%M%S")
                 print("updated as:",time.strftime("%Y-%m-%dT%H:%M:%S",updated_at))
+                continue
+
             temp_row = {}
             temp_row['updated_at'] = time.strftime("%Y-%m-%dT%H:%M:%S",updated_at)
             for field in record:

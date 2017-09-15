@@ -60,16 +60,16 @@ def post_data_list(url, data_list):
 
 
 # post callback
-def finished(*args):
-    global SUCCESS_COUNT
-    print("finished  ",args)
-    if args[1]:
-        print(args[1])
-        if args[1].status_code == 201:
-            SUCCESS_COUNT += 1
-        else:
-            log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data:%s"
-                          % (args[1].status_code, args[1].text, args[0]))
+# def finished(*args):
+#     global SUCCESS_COUNT
+#     print("finished  ",args)
+#     if args[1]:
+#         print(args[1])
+#         if args[1].status_code == 201:
+#             SUCCESS_COUNT += 1
+#         else:
+#             log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data:%s"
+#                           % (args[1].status_code, args[1].text, args[0]))
 
 
 # no exception handle, for implement retrying
@@ -101,7 +101,7 @@ def post_except(url, data, is_json=False):
             SUCCESS_COUNT += 1
         else:
             log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data:%s"
-                          % (res.status_code, res.text, data))
+                          % (res.status_code, res, data))
         return res
     except Exception as e:
         log.log_error("server error:" + str(e) + "\ndata:" + str(data))

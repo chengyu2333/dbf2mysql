@@ -1,0 +1,116 @@
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 7.49, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '长  白 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 7.49, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400002', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '海国实 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.8, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400005', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '京中兴 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.77, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400006', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '华  凯 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.61, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400007', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 5.99, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '水仙Ａ 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 6.0, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400008', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '广  建 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.22, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400009', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 3.78, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '鹫  峰 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.65, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400010', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:25 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '中浩Ａ 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.85, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400011', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '粤金曼 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 5.95, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400012', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '港  岳 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.69, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400013', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '金田Ａ 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.09, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400016', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '国  嘉 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.71, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400017', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '银  化 3', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 5.6, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400018', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '九  州 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.82, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400019', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '五  环 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.29, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400020', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 3.3, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '华夏 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.4, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400021', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:26 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '海  洋 3', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.73, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400022', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 5.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '南  洋 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 5.0, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400023', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 4.01, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '宏  业 3', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.98, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400025', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '中  侨 3', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.52, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400026', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '生  态 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.85, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400027', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '金  马 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.63, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400028', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '汇  集 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 3.0, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400029', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '北  科 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.9, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400030', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '鞍合成 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 1.38, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400031', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '石化Ａ 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.73, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400032', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:27 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '斯\u3000达 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.89, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400033', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:28 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '比  特 1', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 2.59, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400035', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
+Fri Sep 15 18:01:28 2017 | 	post data failed
+code:500
+response:<Response [500]>
+post_data:{'hqzjcj': 0.0, 'hqjrkp': 0.0, 'hqjsd1': 0.0, 'hqhycc': 0, 'hqbjw4': 0.0, 'hqjsd2': 0.0, 'hqbjw5': 0.0, 'hqzqjc': '天 创 5', 'hqsjw1': 0.0, 'hqbjw2': 0.0, 'hqzrsp': 6.08, 'hqsyl1': 0.0, 'hqsjw3': 0.0, 'hqssl1': 0, 'hqcjbs': 0, 'hqssl4': 0, 'hqbsl3': 0, 'hqbsl4': 0, 'hqsyl2': 0.0, 'hqcjsl': 0, 'hqbsl5': 0, 'hqzgcj': 0.0, 'hqsjw4': 0.0, 'hqcjje': 0.0, 'hqssl3': 0, 'hqbjw3': 0.0, 'hqssl5': 0, 'hqzqdm': '400036', 'hqbjw1': 0.0, 'hqsjw2': 0.0, 'hqbsl1': 0, 'updated_at': '2017-09-04T11:35:45', 'hqzdcj': 0.0, 'hqssl2': 0, 'hqbsl2': 0}
