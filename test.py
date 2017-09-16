@@ -1,4 +1,4 @@
-# encode: utf-8
+# -*- coding: utf-8 -*
 import os
 from dbfread import DBF
 from urllib import request

@@ -1,16 +1,17 @@
-# map dict list
+# -*- coding: utf-8 -*
 
-def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, process_value=None, exchange=False):
-    '''
-    # for example:
-    # data_source:
-        [{'ID': 123, 'USER': 'chengyu'},{'ID': 001, 'USER': 'user'}]
-    # map_rule:
-        {'ID':'uid','USER':'username'}
-    # result:
-        [{'uid': 123, 'username': 'chengyu'},{'ID': 001, 'username': 'user'}]
-    '''
-    if strict and exchange:
+"""
+# for example:
+# data_source:
+    [{'ID': 123, 'USER': 'chengyu'},{'ID': 001, 'USER': 'user'}]
+# map_rule:
+    {'ID':'uid','USER':'username'}
+# result:
+    [{'uid': 123, 'username': 'chengyu'},{'ID': 001, 'username': 'user'}]
+"""
+def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, process_value=None, swap=False):
+    # swap key value
+    if strict and swap:
         map_rule = dict(zip(map_rule.values(),map_rule.keys()))
     total = 0
     data_result = []
