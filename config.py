@@ -69,6 +69,6 @@ map_rule = {
         "hqbsl4": "HQBSL4",
         "hqbjw5": "HQBJW5",
         "hqbsl5": "HQBSL5",
-        "updated_at": "#update"
+        "updated_at": "updated_at"
     }
 }

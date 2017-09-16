@@ -24,11 +24,10 @@ class BaseReq:
         self._silence_http_multiplier_max = silence_http_multiplier_max
         self._timeout_http = timeout_http
 
-
     # try post data
     def post_try(self, post_url, data_list, post_json=False, callback=None):
-        # print("post:", post_url, "try ", end="")
-
+        # print("post:", data_list, "  try ", end="")
+        print((data_list))
         @retry(stop_max_attempt_number=self._retry_http,
                wait_exponential_multiplier=self._silence_http_multiplier * 1000,
                wait_exponential_max=self._silence_http_multiplier_max * 1000)
@@ -81,7 +80,7 @@ class PostReq(BaseReq):
                 args = []
                 for data in data_list:
                     args.append(([post_url, data, post_json, self.__callback], None))
-                # print("args",args)
+                print("args",len(args))
                 pool = threadpool.ThreadPool(thread_pool_size)
                 reqs = threadpool.makeRequests(self.post_try, args)
                 [pool.putRequest(req) for req in reqs]
@@ -108,22 +107,20 @@ class PostReq(BaseReq):
 
 
 class GetReq(BaseReq):
-
     # get db file, return is it newer
     @retry(stop_max_attempt_number=config.retry_db,
            wait_exponential_multiplier=config.silence_db_multiplier * 1000,
            wait_exponential_max=config.silence_db_multiplier_max * 1000)
     def get_db_file(self, db_url, db_file_path):
+        return True # 测试本地文件
 
-        return True
-
-        ctime_old = None
+        create_time_old = None
         if os.path.exists(db_file_path):
-            ctime_old = os.stat(db_file_path).st_ctime
+            create_time_old = os.stat(db_file_path).st_ctime
         request.urlretrieve(db_url, db_file_path)
-        ctime = os.stat(db_file_path).st_ctime
+        create_time = os.stat(db_file_path).st_ctime
 
-        if not ctime_old or ctime_old < ctime:return True
+        if not create_time_old or create_time_old < create_time:return True
         else:return False
 
 class Req(PostReq, GetReq):

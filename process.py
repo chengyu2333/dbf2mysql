@@ -10,6 +10,7 @@ from req import Req
 
 class Sync:
     def __init__(self):
+
         self.req = Req(retry_http=config.retry_http,
                   silence_http_multiplier=config.silence_db_multiplier,
                   silence_http_multiplier_max=config.silence_http_multiplier_max,
@@ -24,16 +25,16 @@ class Sync:
             table = DBF(config.db_file_path, encoding="gbk", char_decode_errors="ignore")
             data = []
             updated_at = ""
+            # get update time
+            for record in table:
+                if record['HQZQDM'] == "000000":
+                    updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
+                    updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
+                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
 
             # read record as dict append to list
             for record in table:
-                temp_row = {}
-                if record['HQZQDM']=="000000":
-                    updated_at = str(record['HQZQJC'])+str(record['HQCJBS'])
-                    updated_at = time.strptime(updated_at,"%Y%m%d%H%M%S")
-                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
-                    temp_row['#update'] = updated_at
-
+                temp_row = {'updated_at': updated_at}
                 for field in record:
                     temp_row[field] = record[field]
                 data.append(temp_row)
