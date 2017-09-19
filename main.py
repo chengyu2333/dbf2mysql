@@ -13,7 +13,6 @@ def cycle_exec(func, cycle_time=10):
             func()
         except Exception as e:
             log.log_error(str(e))
-            raise
 
         # 保证固定周期时间
         end_time = time.time()
@@ -22,6 +21,7 @@ def cycle_exec(func, cycle_time=10):
         log.log_success("process finished,spend time:" + str(end_time - start_time))
         print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
+        time.sleep(1)  # 多睡眠1s，方便查看log
 
 if __name__ == "__main__":
     cycle_exec(Sync().sync, config.cycle_time)
