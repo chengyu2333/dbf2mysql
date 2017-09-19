@@ -1,2 +1,48 @@
 # -*- coding: utf-8 -*
-import thread
+import os
+import time
+import requests
+import json
+
+def get():
+    path = "tmp/nqhq.dbf"
+    time_temp_path = "tmp/old_time.tmp"
+    if os.path.isfile(path):
+        create_time = os.stat(path).st_ctime
+        if os.path.exists(time_temp_path):
+            f = open(time_temp_path, 'r+')
+            create_time_old = f.read()
+            create_time_old = float(create_time_old) if create_time_old else False
+        else:
+            create_time_old = False
+        f = open(time_temp_path, 'w')
+        f.write(str(create_time))
+        f.close()
+        if not create_time_old or create_time_old < create_time:
+            return path
+        else:
+            return False
+        return path
+
+# print(get())
+
+
+def get_id(code=835487):
+    api_url = "http://api.chinaipo.com/markets/v1/rthq/?code=" + str(code)
+    response = requests.get(api_url)
+    result = json.loads(response.text)
+    if result['results']:
+        result = result['results'][0]['id']
+        return result
+    else:
+        return False
+
+def update_date(id, data):
+    api_url = "http://api.chinaipo.com/markets/v1/rthq/%s/" % id
+    response = requests.put(api_url,data)
+    print(response)
+    print(response.text)
+
+# update_date("59bfcbb99c94dd39d01bee39",{"hqzqjc":"东金科技"})
+print(get_id(111111))
+time.sleep(5)

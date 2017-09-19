@@ -2,7 +2,7 @@
 
 local_source = True  # 是否使用本地数据源
 db_url = "http://183.60.7.32/nqhq.dbf"
-db_file_path = "nqhq/"
+db_file_path = "nqhq/"  # 文件名或文件夹名
 post_url = "http://api.chinaipo.com/markets/v1/rthq/"
 # post_url = "http://127.0.0.1"
 post_json = False
