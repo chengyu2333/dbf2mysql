@@ -3,9 +3,9 @@ import time
 
 local_source = True  # 是否使用本地数据源
 db_url = "http://183.60.7.32/nqhq.dbf"
-# db_file_path = "tmp/nqhq.dbf"  # 文件名或文件夹名
+db_file_path = "dbf/"  # 文件名或文件夹名
+# db_file_path = "dbf/%s" % time.strftime("%Y%m%d")
 
-db_file_path = "dbf/"
 api_post = "http://api.chinaipo.com/markets/v1/rthq/"
 api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/"
 api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"

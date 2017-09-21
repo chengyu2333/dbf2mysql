@@ -28,7 +28,7 @@ class Sync:
         data_cache = {}
         updated_at = ""
         dbf_cache = "tmp/cache.dbf"
-        self.log.log_success("start process, db path: " + str(db_path))
+        self.log.log_success("start process, dbf: " + str(db_path))
 
         if db_path:
             try:
