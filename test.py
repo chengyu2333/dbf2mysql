@@ -27,12 +27,29 @@ def get():
 # print(get())
 
 
-def get_id(code=835487):
-    api_url = "http://api.chinaipo.com/markets/v1/rthq/?code=" + str(code)
+def get_id( code=833027):
+    code = str(code)
+    id_temp_path = "tmp/id_cache.txt"
+    api_url = "http://api.chinaipo.com/markets/v1/rthq/?code=" + code
+    id_list = {}
+    # get id from cache
+    if os.path.exists(id_temp_path):
+        f = open(id_temp_path, "r")
+        id_temp = f.read()
+        f.close()
+        if id_temp:
+            id_list = json.loads(id_temp)
+            if code in id_list:
+                return id_list[code]
+    # get id from api
     response = requests.get(api_url)
     result = json.loads(response.text)
     if result['results']:
         result = result['results'][0]['id']
+        f = open(id_temp_path, "w")
+        id_list[code]= result
+        f.write(json.dumps(id_list))
+        f.close()
         return result
     else:
         return False
@@ -44,5 +61,5 @@ def update_date(id, data):
     print(response.text)
 
 # update_date("59bfcbb99c94dd39d01bee39",{"hqzqjc":"东金科技"})
-print(get_id(111111))
+print(get_id())
 time.sleep(5)

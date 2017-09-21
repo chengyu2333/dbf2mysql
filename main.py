@@ -12,7 +12,8 @@ def cycle_exec(func, cycle_time=10):
         try:
             func()
         except Exception as e:
-            log.log_error(str(e))
+            log.log_error("adsfalg " + str(e))
+            raise
 
         # 保证固定周期时间
         end_time = time.time()

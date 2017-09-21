@@ -1,2 +1,7 @@
 nqhq
 logs
+doc
+dbf
+__pycache__
+.idea
+*.pyc

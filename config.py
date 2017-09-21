@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*
+import time
 
 local_source = True  # 是否使用本地数据源
 db_url = "http://183.60.7.32/nqhq.dbf"
-db_file_path = "nqhq/"  # 文件名或文件夹名
-post_url = "http://api.chinaipo.com/markets/v1/rthq/"
-# post_url = "http://127.0.0.1"
-post_json = False
-success_code = 201
-# http://www.chinaipo.com/data/hangqing/833027/833027.php
+# db_file_path = "tmp/nqhq.dbf"  # 文件名或文件夹名
 
-cycle_time = 30  # 扫描周期
+db_file_path = "dbf/"
+api_post = "http://api.chinaipo.com/markets/v1/rthq/"
+api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/"
+api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
+post_json = False
+post_success_code = 201
+
+cycle_time = 5  # 扫描周期
 enable_thread = True  # 启用线程
-thread_pool_size = 10  # 线程池大小
+thread_pool_size = 2  # 线程池大小
 # cache_size = 100  # 数据库缓存大小
 
 # 超时时间

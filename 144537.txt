@@ -1,2 +1,0 @@
-空数据无需上传，
-http://api.chinaipo.com/markets/v1/rthq/?code=hqzqdm

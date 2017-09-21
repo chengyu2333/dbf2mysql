@@ -6,9 +6,11 @@ import os
 import io
 import json
 import threadpool
+import threading
 from retry import retry
 import config
 from log import Log
+from tools import view_bar
 
 
 class BaseReq:
@@ -17,6 +19,7 @@ class BaseReq:
                  silence_http_multiplier=2,
                  silence_http_multiplier_max=60,
                  timeout_http=10):
+        self.data_total = 0
         self.processed_count = 0
         self.success_count = 0
         self.post_success_code = 201
@@ -29,13 +32,10 @@ class BaseReq:
 
     # try post data
     def post_try(self, post_url, data_list, post_json=False, callback=None):
-        # print("post:", data_list, "  try ", end="")
-        # print(data_list)
         @retry(stop_max_attempt_number=self._retry_http,
                wait_exponential_multiplier=self._silence_http_multiplier * 1000,
                wait_exponential_max=self._silence_http_multiplier_max * 1000)
         def __post_retry():
-            # print(".", end="")
             try:
                 if post_json:
                     return requests.post(post_url, json=json.dumps(data_list), timeout=self._timeout_http)
@@ -52,7 +52,6 @@ class BaseReq:
 
     # get request
     def get_try(self, get_url, callback=None):
-        # print("get:", get_url, "try ", end="")
         @retry(stop_max_attempt_number=self._retry_http,
                wait_exponential_multiplier=self._silence_http_multiplier * 1000,
                wait_exponential_max=self._silence_http_multiplier_max * 1000)
@@ -74,9 +73,9 @@ class BaseReq:
                wait_exponential_multiplier=config.silence_http_multiplier * 1000,
                wait_exponential_max=config.silence_http_multiplier_max * 1000)
         def put_date_inner():
-            api_url = "http://api.chinaipo.com/markets/v1/rthq/%s/" % id
+            api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/".format(id=id)
             try:
-                return requests.put(api_url,data)
+                return requests.put(api_put,data)
             except Exception as e:
                 print(str(e))
                 raise
@@ -94,6 +93,7 @@ class PostReq(BaseReq):
     # batch post data to webservice
     def post_data(self, post_url, data_list, post_json=False, enable_thread=False,thread_pool_size=10,post_success_code=201):
         self.post_success_code = post_success_code
+        self.data_total = len(data_list)
         if not self.pool:
             self.pool = threadpool.ThreadPool(thread_pool_size)
         try:
@@ -101,14 +101,11 @@ class PostReq(BaseReq):
                 args = []
                 for data in data_list:
                     args.append(([post_url, data, post_json, self.__callback], None))
-                print("record count:", len(args))
-                # pool = threadpool.ThreadPool(thread_pool_size)
                 reqs = threadpool.makeRequests(self.post_try, args)
                 [self.pool.putRequest(req) for req in reqs]
                 self.pool.wait()
                 args.clear()
                 reqs.clear()
-                pool = None
             else:
                 for d in data_list:
                     self.post_try(post_url, d, post_json, self.__callback)
@@ -122,14 +119,12 @@ class PostReq(BaseReq):
         self.processed_count += 1
         response = args[0]
         if response:
-
             if response.status_code == self.post_success_code:
                 self.success_count += 1
-                # print("success")
             else:
-                self.log.log_error("post data failed\ncode:%d\nresponse:%s\npost_data data:%s"
+                self.log.log_error("response error\ncode:%d\nresponse:%s\npost_data data:%s"
                               % (response.status_code,response,response))
-        print(self.processed_count,"/",self.success_count)
+        view_bar(self.processed_count, self.data_total)
 
 
 class GetReq(BaseReq):
@@ -141,7 +136,7 @@ class GetReq(BaseReq):
         # get db file from local
         if config.local_source and os.path.exists(config.db_file_path):
             path = config.db_file_path
-            # if path is file
+            # path is file
             if os.path.isfile(path):
                 time_temp_path = "tmp/old_time.tmp"
                 create_time = os.stat(path).st_ctime
@@ -184,6 +179,7 @@ class GetReq(BaseReq):
         except:
             raise
 
+    # cache file list and pop File path
     def pop_dbpath(self, dbfile_path):
         dblist_path = "tmp/dblist.txt"
         try:
@@ -198,7 +194,7 @@ class GetReq(BaseReq):
             f.close()
             return dbfile_path + dbpath
         except Exception as e:
-            self.log.log_error(str(e))
+            self.log.log_error("hpjjaf " + str(e))
             raise
 
     @retry(stop_max_attempt_number=config.retry_http,
@@ -206,26 +202,30 @@ class GetReq(BaseReq):
            wait_exponential_max=config.silence_http_multiplier_max * 1000)
     def get_id(self, code=833027):
         code = str(code)
-        id_temp_path = "tmp/id_temp.txt"
+        id_temp_path = "tmp/id_cache.txt"
         api_url = "http://api.chinaipo.com/markets/v1/rthq/?code=" + code
-        f = open(id_temp_path,"r")
-        id_temp = f.read()
-        f.close()
-        id_temp = json.loads(id_temp)
-        if code in id_temp:
-            return id_temp[code]
+        id_list = {}
+        # get id from cache
+        if os.path.exists(id_temp_path):
+            f = open(id_temp_path, "r")
+            id_temp = f.read()
+            f.close()
+            if id_temp:
+                id_list = json.loads(id_temp)
+                if code in id_list:
+                    return id_list[code]
+        # get id from api
+        response = requests.get(api_url)
+        result = json.loads(response.text)
+        if result['results']:
+            result = result['results'][0]['id']
+            f = open(id_temp_path, "w")
+            id_list[code] = result
+            f.write(json.dumps(id_list))
+            f.close()
+            return result
         else:
-            response = requests.get(api_url)
-            result = json.loads(response.text)
-            if result['results']:
-                result = result['results'][0]['id']
-                f = open(id_temp_path, "w")
-                id_temp.append({code,result})
-                f.write(json.dumps(id_temp))
-                f.close()
-                return result
-            else:
-                return False
+            return False
 
 
 class Req(PostReq, GetReq):
