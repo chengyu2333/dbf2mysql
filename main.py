@@ -5,6 +5,22 @@ from log import Log
 from process import Sync
 log = Log(config.print_log)
 
+
+# 当前时间是否在某个时间段
+# 例如9:30-11:30,13:30-15:30
+# in_time_range("093000-113000","133000-153000")
+def in_time_range(*args):
+    now = time.strftime("%H%M%S")
+    for arg in args:
+        if len(arg) == 13:
+            range = arg.split("-")
+            if range[0] <= now <= range[1] or range[0] >= now >=range[1]:
+                print(True)
+                return True
+        else:
+            raise Exception("时间格式不正确，如093000-113000")
+    return False
+
 # 周期执行函数
 def cycle_exec(func, cycle_time=10):
     while True:
@@ -25,4 +41,6 @@ def cycle_exec(func, cycle_time=10):
         time.sleep(1)  # 多睡眠1s，方便查看log
 
 if __name__ == "__main__":
-    cycle_exec(Sync().sync, config.cycle_time)
+    # cycle_exec(Sync().sync, config.cycle_time)
+    # in_time_range(("100000","200000"),("100000","200000"))
+    in_time_range("093000-113000","133000-183000")

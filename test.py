@@ -61,5 +61,6 @@ def update_date(id, data):
     print(response.text)
 
 # update_date("59bfcbb99c94dd39d01bee39",{"hqzqjc":"东金科技"})
-print(get_id())
+# print(get_id())
+
 time.sleep(5)
