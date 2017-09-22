@@ -8,7 +8,7 @@ log = Log(config.print_log)
 
 # 当前时间是否在某个时间段
 # 例如9:30-11:30,13:30-15:30
-# in_time_range("093000-113000","133000-153000")
+# in_time_range("093000-113000,133000-153000")
 def in_time_range(ranges):
     now = time.strptime(time.strftime("%H%M%S"),"%H%M%S")
     ranges = ranges.split(",")
@@ -17,19 +17,20 @@ def in_time_range(ranges):
         if time.strptime(r[0],"%H%M%S") <= now <= time.strptime(r[1],"%H%M%S") or time.strptime(r[0],"%H%M%S") >= now >=time.strptime(r[1],"%H%M%S"):
             return True
     return False
-# in_time_range("093000-113000,133000-163000")
 
 
 # 周期执行函数
 def cycle_exec(func, cycle_time=10):
     while True:
-        start_time = time.time()
-        try:
-            if in_time_range(config.time_range):
-                func()
-            else:
+        # 判断时间段
+        if config.time_range:
+            if not in_time_range(config.time_range):
                 time.sleep(cycle_time)
                 continue
+
+        start_time = time.time()
+        try:
+            func()
         except Exception as e:
             log.log_error(str(e))
 

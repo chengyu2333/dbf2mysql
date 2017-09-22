@@ -8,8 +8,9 @@ db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.
 db_file_path = lambda :"dbf/"
 # 待处理数据文件缓存路径
 cache_dblist = lambda :"tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
-# 程序运行的时间段，格式%H%M%S
+# 程序运行的时间段，格式%H%M%S, 空字符时一直运行
 time_range = "093000-113000,133000-163000"
+time_range = ""
 
 
 api_post = "http://api.chinaipo.com/markets/v1/rthq/"

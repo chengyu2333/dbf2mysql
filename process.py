@@ -31,11 +31,11 @@ class Sync:
         if db_path:
             self.log.log_success("start process, dbf: " + str(db_path))
             try:
-                if os.path.isfile(db_path):
+                if os.path.exists(db_path):
                     # print("new db:", get_md5(db_path))
                     table = DBF(db_path, encoding="gbk", char_decode_errors="ignore")
                 # the last dbf file
-                if os.path.isfile(dbf_prev):
+                if os.path.exists(dbf_prev):
                     # print("last db:", get_md5(dbf_prev))
                     table_cache = DBF(dbf_prev, encoding="gbk", char_decode_errors="ignore")
                 else: table_cache = []
@@ -57,9 +57,7 @@ class Sync:
             skip_count = 0
             for record in table: # iteration every row
                 temp_row = {}
-                skip = False
                 if record['HQZQDM'] in data_cache and str(record) == str(data_cache[record['HQZQDM']]):
-                    skip = True
                     skip_count += 1
                 else:
                     for field in record:  # iteration every field
@@ -87,6 +85,7 @@ class Sync:
 
             except Exception as e:
                 self.log.log_error(str(e))
+
 
     def cache_id(self):
         table = DBF("tmp/nqhq.dbf", encoding="gbk", char_decode_errors="ignore")

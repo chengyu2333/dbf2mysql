@@ -10,6 +10,7 @@ import io
 def update_dblist(dblist_path, dbfile_path):
     try:
         dblist = os.listdir(dbfile_path)
+        dblist.sort()
         dbdict = collections.OrderedDict()
         lines = ""
         if os.path.exists(dblist_path):
@@ -38,7 +39,7 @@ def update_dblist(dblist_path, dbfile_path):
     except:
         raise
 
-# update_dblist("tmp/dbdict.txt", "dbf")
+update_dblist("tmp/dbdict.txt", "dbf")
 
 # cache file list and pop File path
 def pop_dbpath(dbfile_path):

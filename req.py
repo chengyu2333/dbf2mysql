@@ -180,6 +180,7 @@ class GetReq(BaseReq):
     def update_dblist_cache(dblist_path, dbfile_path):
         try:
             dblist = os.listdir(dbfile_path)
+            dblist.sort()
             dbdict = collections.OrderedDict()
             if os.path.exists(dblist_path):
                 with open(dblist_path, 'r+', encoding="utf-8") as f:
@@ -199,7 +200,7 @@ class GetReq(BaseReq):
                     f.write(lines)
             else:
                 lines = ""
-                os.remove("tmp/prev.dbf")
+                if os.path.exists("tmp/prev.dbf"): os.remove("tmp/prev.dbf")
                 for l in dblist:
                     lines += l + " " + "0\n"
                 with open(dblist_path, 'w', encoding="utf-8") as f:
