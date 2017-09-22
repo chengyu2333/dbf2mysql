@@ -9,6 +9,8 @@ db_file_path = lambda :"dbf/"
 
 cache_dblist = lambda :"tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
 
+time_range = "093000-113000,133000-163000"
+
 # db_file_path = "dbf/%s" % time.strftime("%Y%m%d")
 
 

@@ -27,7 +27,7 @@ class Sync:
         data = []
         data_cache = {}
         updated_at = ""
-        dbf_last = "tmp/last.dbf"  # Last processed file
+        dbf_prev = "tmp/prev.dbf"  # Last processed file
         if db_path:
             self.log.log_success("start process, dbf: " + str(db_path))
             try:
@@ -35,9 +35,9 @@ class Sync:
                     # print("new db:", get_md5(db_path))
                     table = DBF(db_path, encoding="gbk", char_decode_errors="ignore")
                 # the last dbf file
-                if os.path.isfile(dbf_last):
-                    # print("last db:", get_md5(dbf_last))
-                    table_cache = DBF(dbf_last, encoding="gbk", char_decode_errors="ignore")
+                if os.path.isfile(dbf_prev):
+                    # print("last db:", get_md5(dbf_prev))
+                    table_cache = DBF(dbf_prev, encoding="gbk", char_decode_errors="ignore")
                 else: table_cache = []
 
             except Exception as e:
@@ -67,7 +67,7 @@ class Sync:
                     temp_row['updated_at'] = updated_at
                     data.append(temp_row)
             # update db cache
-            shutil.copy(db_path, dbf_last)
+            shutil.copy(db_path, dbf_prev)
             # map key
             new_data, total = map_dict(data,
                                        config.map_rule['map'],
@@ -87,7 +87,6 @@ class Sync:
 
             except Exception as e:
                 self.log.log_error(str(e))
-                # raise
 
     def cache_id(self):
         table = DBF("tmp/nqhq.dbf", encoding="gbk", char_decode_errors="ignore")

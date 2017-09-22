@@ -5,6 +5,7 @@ from urllib import request
 import os
 import io
 import json
+import collections
 import threadpool
 import threading
 from retry import retry
@@ -178,7 +179,7 @@ class GetReq(BaseReq):
     def update_dblist_cache(dblist_path, dbfile_path):
         try:
             dblist = os.listdir(dbfile_path)
-            dbdict = {}
+            dbdict = collections.OrderedDict()
             if os.path.exists(dblist_path):
                 with open(dblist_path, 'r+', encoding="utf-8") as f:
                     lines = f.readlines()
@@ -205,8 +206,8 @@ class GetReq(BaseReq):
             raise
 
     # cache file list and pop File path
-    def pop_dbpath(self, dbfile_path, cache_dblist):
-        dbdict = {}
+    def pop_dbpath(self, dbfile_path, cache_dblist, desc=False):
+        dbdict = collections.OrderedDict()
         try:
             self.update_dblist_cache(cache_dblist, dbfile_path)
             with open(cache_dblist, 'r+', encoding="utf-8") as f:

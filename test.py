@@ -3,14 +3,14 @@ import os
 import time
 import requests
 import json
+import collections
 import io
 
 
 def update_dblist(dblist_path, dbfile_path):
     try:
         dblist = os.listdir(dbfile_path)
-        print("file total:", len(dblist))
-        dbdict = {}
+        dbdict = collections.OrderedDict()
         lines = ""
         if os.path.exists(dblist_path):
             with open(dblist_path, 'r+', encoding="utf-8") as f:
@@ -32,15 +32,18 @@ def update_dblist(dblist_path, dbfile_path):
             lines =  ""
             for l in dblist:
                 lines += l + " " + "0\n"
+            print(lines)
             with open(dblist_path, 'w', encoding="utf-8") as f:
                 f.write(lines)
     except:
         raise
 
+# update_dblist("tmp/dbdict.txt", "dbf")
+
 # cache file list and pop File path
 def pop_dbpath(dbfile_path):
     dblist_path = "tmp/dbdict.txt"
-    dbdict = {}
+    dbdict = collections.OrderedDict()
     try:
         update_dblist(dblist_path, dbfile_path)
         with open(dblist_path, 'r+', encoding="utf-8") as f:

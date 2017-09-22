@@ -9,18 +9,15 @@ log = Log(config.print_log)
 # 当前时间是否在某个时间段
 # 例如9:30-11:30,13:30-15:30
 # in_time_range("093000-113000","133000-153000")
-def in_time_range(*args):
-    now = time.strftime("%H%M%S")
-    for arg in args:
-        if len(arg) == 13:
-            range = arg.split("-")
-            if range[0] <= now <= range[1] or range[0] >= now >=range[1]:
-                print(True)
-                return True
-        else:
-            raise Exception("时间格式不正确，如093000-113000")
+def in_time_range(ranges):
+    now = time.strptime(time.strftime("%H%M%S"),"%H%M%S")
+    ranges = ranges.split(",")
+    for range in ranges:
+        r = range.split("-")
+        if time.strptime(r[0],"%H%M%S") <= now <= time.strptime(r[1],"%H%M%S") or time.strptime(r[0],"%H%M%S") >= now >=time.strptime(r[1],"%H%M%S"):
+            return True
     return False
-# in_time_range("093000-113000","133000-183000")
+# in_time_range("093000-113000,133000-163000")
 
 
 # 周期执行函数
@@ -28,7 +25,11 @@ def cycle_exec(func, cycle_time=10):
     while True:
         start_time = time.time()
         try:
-            func()
+            if in_time_range(config.time_range):
+                func()
+            else:
+                time.sleep(cycle_time)
+                continue
         except Exception as e:
             log.log_error(str(e))
 
@@ -39,7 +40,7 @@ def cycle_exec(func, cycle_time=10):
         log.log_success("process finished,spend time:" + str(end_time - start_time))
         print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
-        time.sleep(1)  # 多睡眠1s，方便查看log
+        # time.sleep(1)  # 多睡眠1s，方便查看log
 
 if __name__ == "__main__":
     cycle_exec(Sync().sync, config.cycle_time)
