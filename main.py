@@ -20,6 +20,8 @@ def in_time_range(*args):
         else:
             raise Exception("时间格式不正确，如093000-113000")
     return False
+# in_time_range("093000-113000","133000-183000")
+
 
 # 周期执行函数
 def cycle_exec(func, cycle_time=10):
@@ -28,8 +30,7 @@ def cycle_exec(func, cycle_time=10):
         try:
             func()
         except Exception as e:
-            log.log_error("adsfalg " + str(e))
-            raise
+            log.log_error(str(e))
 
         # 保证固定周期时间
         end_time = time.time()
@@ -41,6 +42,4 @@ def cycle_exec(func, cycle_time=10):
         time.sleep(1)  # 多睡眠1s，方便查看log
 
 if __name__ == "__main__":
-    # cycle_exec(Sync().sync, config.cycle_time)
-    # in_time_range(("100000","200000"),("100000","200000"))
-    in_time_range("093000-113000","133000-183000")
+    cycle_exec(Sync().sync, config.cycle_time)

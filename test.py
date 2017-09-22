@@ -3,6 +3,73 @@ import os
 import time
 import requests
 import json
+import io
+
+
+def update_dblist(dblist_path, dbfile_path):
+    try:
+        dblist = os.listdir(dbfile_path)
+        print("file total:", len(dblist))
+        dbdict = {}
+        lines = ""
+        if os.path.exists(dblist_path):
+            with open(dblist_path, 'r+', encoding="utf-8") as f:
+                lines = f.readlines()
+                for line in lines:
+                    line = line.replace("\n", "")
+                    line = line.split(" ")
+                    dbdict[line[0]] =line[1]
+                for l in dblist:
+                    if l not in dbdict:
+                        dbdict[l] = "0"
+                f.seek(0)
+                f.truncate()
+                lines = ""
+                for l in dbdict:
+                    lines += l + " " + dbdict[l] + "\n"
+                f.write(lines)
+        else:
+            lines =  ""
+            for l in dblist:
+                lines += l + " " + "0\n"
+            with open(dblist_path, 'w', encoding="utf-8") as f:
+                f.write(lines)
+    except:
+        raise
+
+# cache file list and pop File path
+def pop_dbpath(dbfile_path):
+    dblist_path = "tmp/dbdict.txt"
+    dbdict = {}
+    try:
+        update_dblist(dblist_path, dbfile_path)
+        with open(dblist_path, 'r+', encoding="utf-8") as f:
+            lines = f.readlines()
+            for line in lines:
+                line = line.replace("\n", "")
+                line = line.split(" ")
+                dbdict[line[0]] = line[1]
+            if "0" in dbdict.values():
+                dbpath = list(dbdict.keys())[list(dbdict.values()).index("0")]
+                dbdict[dbpath] = "1"
+                f.seek(0)
+                f.truncate()
+                lines = ""
+                for l in dbdict:
+                    lines += l + " " + dbdict[l]+ "\n"
+                f.write(lines)
+                return dbfile_path + dbpath
+    except Exception as e:
+        raise
+
+while 1:
+    p = pop_dbpath("dbf/")
+    if p:
+        print(p)
+    else:
+        print("finished")
+        break
+
 
 def get():
     path = "tmp/nqhq.dbf"
@@ -27,7 +94,7 @@ def get():
 # print(get())
 
 
-def get_id( code=833027):
+def get_id(code=833027):
     code = str(code)
     id_temp_path = "tmp/id_cache.txt"
     api_url = "http://api.chinaipo.com/markets/v1/rthq/?code=" + code
@@ -47,7 +114,7 @@ def get_id( code=833027):
     if result['results']:
         result = result['results'][0]['id']
         f = open(id_temp_path, "w")
-        id_list[code]= result
+        id_list[code] = result
         f.write(json.dumps(id_list))
         f.close()
         return result

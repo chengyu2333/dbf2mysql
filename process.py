@@ -27,18 +27,17 @@ class Sync:
         data = []
         data_cache = {}
         updated_at = ""
-        dbf_cache = "tmp/cache.dbf"
-        self.log.log_success("start process, dbf: " + str(db_path))
-
+        dbf_last = "tmp/last.dbf"  # Last processed file
         if db_path:
+            self.log.log_success("start process, dbf: " + str(db_path))
             try:
                 if os.path.isfile(db_path):
                     # print("new db:", get_md5(db_path))
                     table = DBF(db_path, encoding="gbk", char_decode_errors="ignore")
                 # the last dbf file
-                if os.path.isfile(dbf_cache):
-                    # print("last db:", get_md5(dbf_cache))
-                    table_cache = DBF(dbf_cache, encoding="gbk", char_decode_errors="ignore")
+                if os.path.isfile(dbf_last):
+                    # print("last db:", get_md5(dbf_last))
+                    table_cache = DBF(dbf_last, encoding="gbk", char_decode_errors="ignore")
                 else: table_cache = []
 
             except Exception as e:
@@ -54,13 +53,12 @@ class Sync:
                     updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
                     updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
                     break
-
             # read record as dict append to list
             skip_count = 0
             for record in table: # iteration every row
                 temp_row = {}
                 skip = False
-                if data_cache and str(record) == str(data_cache[record['HQZQDM']]):
+                if record['HQZQDM'] in data_cache and str(record) == str(data_cache[record['HQZQDM']]):
                     skip = True
                     skip_count += 1
                 else:
@@ -69,7 +67,7 @@ class Sync:
                     temp_row['updated_at'] = updated_at
                     data.append(temp_row)
             # update db cache
-            shutil.copy(db_path, dbf_cache)
+            shutil.copy(db_path, dbf_last)
             # map key
             new_data, total = map_dict(data,
                                        config.map_rule['map'],
