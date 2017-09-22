@@ -129,6 +129,7 @@ class PostReq(BaseReq):
 
 
 class GetReq(BaseReq):
+    # TODO 缓存数据文件，防止数据突然增多时处理速度跟不上
     # get last db file path
     @retry(stop_max_attempt_number=config.retry_http,
            wait_exponential_multiplier=config.silence_http_multiplier * 1000,
@@ -198,6 +199,7 @@ class GetReq(BaseReq):
                     f.write(lines)
             else:
                 lines = ""
+                os.remove("tmp/prev.dbf")
                 for l in dblist:
                     lines += l + " " + "0\n"
                 with open(dblist_path, 'w', encoding="utf-8") as f:

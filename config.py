@@ -3,16 +3,13 @@ import time
 
 local_source = True  # 是否使用本地数据源
 db_url = "http://183.60.7.32/nqhq.dbf"
-db_file_path = "dbf/"  # 文件名或文件夹名
-db_file_path = lambda :"dbf/%s" % time.strftime("%Y%m%d")
+# 数据文件的文件名或文件夹名
+db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
 db_file_path = lambda :"dbf/"
-
+# 待处理数据文件缓存路径
 cache_dblist = lambda :"tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
-
+# 程序运行的时间段，格式%H%M%S
 time_range = "093000-113000,133000-163000"
-
-# db_file_path = "dbf/%s" % time.strftime("%Y%m%d")
-
 
 
 api_post = "http://api.chinaipo.com/markets/v1/rthq/"
@@ -24,15 +21,11 @@ post_success_code = 201
 cycle_time = 5  # 扫描周期
 enable_thread = True  # 启用线程
 thread_pool_size = 2  # 线程池大小
-# cache_size = 100  # 数据库缓存大小
 
 # 超时时间
 timeout_http = 30
-# timeout_db = 10
 
 # 重试等待时间（指数形式）
-# silence_db_multiplier = 2
-# silence_db_multiplier_max = 10
 silence_http_multiplier = 2
 silence_http_multiplier_max = 10
 
@@ -42,6 +35,7 @@ retry_db = 5
 
 print_log = True  # 输出日志到控制台
 
+# 数据库字段和POST字段的映射关系
 map_rule = {
     "strict": True,  # 严格模式将仅同步配置的map中的字段
     "lower": True,  # 将column转小写,只在非严格模式下有效
