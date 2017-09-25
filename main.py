@@ -30,7 +30,7 @@ def cycle_exec(func, cycle_time=10):
 
         start_time = time.time()
         try:
-            func()
+            re = func()
         except Exception as e:
             log.log_error(str(e))
 
@@ -38,10 +38,13 @@ def cycle_exec(func, cycle_time=10):
         end_time = time.time()
         sleep_time = cycle_time - (end_time - start_time)
         sleep_time = sleep_time if sleep_time>=0 else 0
-        log.log_success("process finished,spend time:" + str(end_time - start_time))
-        print('waiting…… %ds'%sleep_time)
+        if re:
+            log.log_success("process finished,spend time:" + str(end_time - start_time))
+            print('waiting…… %ds'%sleep_time)
         time.sleep(sleep_time)
         # time.sleep(1)  # 多睡眠1s，方便查看log
 
 if __name__ == "__main__":
+    print("synchronize start")
     cycle_exec(Sync().sync, config.cycle_time)
+    # TODO 优化对比算法，优化线程

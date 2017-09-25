@@ -142,28 +142,29 @@ class GetReq(BaseReq):
         else:cache_dblist = config.cache_dblist
 
         # get db file from local
-        if config.local_source and os.path.exists(path):
-            # path is file
-            if os.path.isfile(path):
-                time_temp_path = "tmp/old_time.tmp"
-                create_time = os.stat(path).st_ctime
-                if os.path.exists(time_temp_path):
-                    f = open(time_temp_path, 'r+')
-                    create_time_old = f.read()
-                    create_time_old = float(create_time_old) if create_time_old else False
-                else:create_time_old = False
-                f = open(time_temp_path, 'w')
-                f.write(str(create_time))
-                f.close()
-                if not create_time_old or create_time_old < create_time:return path
-                else:return False
-            #  if path is folder
-            else:
-                try:
-                    return self.pop_dbpath(path, cache_dblist)
-                except Exception as e:
-                    self.log.log_error(str(e))
-                    raise
+        if config.local_source:
+            if os.path.exists(path):
+                # path is file
+                if os.path.isfile(path):
+                    time_temp_path = "tmp/old_time.tmp"
+                    create_time = os.stat(path).st_ctime
+                    if os.path.exists(time_temp_path):
+                        f = open(time_temp_path, 'r+')
+                        create_time_old = f.read()
+                        create_time_old = float(create_time_old) if create_time_old else False
+                    else:create_time_old = False
+                    f = open(time_temp_path, 'w')
+                    f.write(str(create_time))
+                    f.close()
+                    if not create_time_old or create_time_old < create_time:return path
+                    else:return False
+                #  if path is folder
+                else:
+                    try:
+                        return self.pop_dbpath(path, cache_dblist)
+                    except Exception as e:
+                        self.log.log_error(str(e))
+                        raise
         # get db file from url
         else:
             path = "tmp/dbf_cache_pool/cache.dbf"
@@ -200,6 +201,7 @@ class GetReq(BaseReq):
                     f.write(lines)
             else:
                 lines = ""
+                # TODO 先上传全部再删除
                 if os.path.exists("tmp/prev.dbf"): os.remove("tmp/prev.dbf")
                 for l in dblist:
                     lines += l + " " + "0\n"

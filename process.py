@@ -13,7 +13,6 @@ from tools import get_md5
 
 class Sync:
     def __init__(self):
-
         self.req = Req(retry_http=config.retry_http,
                   silence_http_multiplier=config.silence_http_multiplier,
                   silence_http_multiplier_max=config.silence_http_multiplier_max,
@@ -85,6 +84,7 @@ class Sync:
 
             except Exception as e:
                 self.log.log_error(str(e))
+            return True
 
 
     def cache_id(self):
