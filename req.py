@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*
-import configparser
 import requests
 from urllib import request
 import os
@@ -7,7 +6,6 @@ import io
 import json
 import collections
 import threadpool
-import threading
 from retry import retry
 import config
 from log import Log
@@ -95,6 +93,8 @@ class PostReq(BaseReq):
     def post_data(self, post_url, data_list, post_json=False, enable_thread=False,thread_pool_size=10,post_success_code=201):
         self.post_success_code = post_success_code
         self.data_total = len(data_list)
+        if self.data_total:view_bar(0, self.data_total)
+        else:return
         if not self.pool:
             self.pool = threadpool.ThreadPool(thread_pool_size)
         try:
@@ -129,7 +129,6 @@ class PostReq(BaseReq):
 
 
 class GetReq(BaseReq):
-    # TODO 缓存数据文件，防止数据突然增多时处理速度跟不上
     # get last db file path
     @retry(stop_max_attempt_number=config.retry_http,
            wait_exponential_multiplier=config.silence_http_multiplier * 1000,
@@ -201,8 +200,7 @@ class GetReq(BaseReq):
                     f.write(lines)
             else:
                 lines = ""
-                # TODO 先上传全部再删除
-                if os.path.exists("tmp/prev.dbf"): os.remove("tmp/prev.dbf")
+                # if os.path.exists("tmp/prev.dbf"): os.remove("tmp/prev.dbf")
                 for l in dblist:
                     lines += l + " " + "0\n"
                 with open(dblist_path, 'w', encoding="utf-8") as f:

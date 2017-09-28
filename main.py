@@ -21,6 +21,7 @@ def in_time_range(ranges):
 
 # 周期执行函数
 def cycle_exec(func, cycle_time=10):
+    re = False
     while True:
         # 判断时间段
         if config.time_range:
@@ -33,6 +34,7 @@ def cycle_exec(func, cycle_time=10):
             re = func()
         except Exception as e:
             log.log_error(str(e))
+            raise
 
         # 保证固定周期时间
         end_time = time.time()

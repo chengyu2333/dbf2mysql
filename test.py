@@ -39,11 +39,11 @@ def update_dblist(dblist_path, dbfile_path):
     except:
         raise
 
-update_dblist("tmp/dbdict.txt", "dbf")
+# update_dblist("tmp/dbdict.txt", "dbf")
 
 # cache file list and pop File path
 def pop_dbpath(dbfile_path):
-    dblist_path = "tmp/dbdict.txt"
+    dblist_path = "tmp/list_cache_20170926.txt"
     dbdict = collections.OrderedDict()
     try:
         update_dblist(dblist_path, dbfile_path)

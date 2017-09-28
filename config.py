@@ -8,6 +8,7 @@ db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.
 db_file_path = lambda :"dbf/"
 # 待处理数据文件缓存路径
 cache_dblist = lambda :"tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
+prev_file = "tmp/prev.dbf"
 # 程序运行的时间段，格式%H%M%S, 空字符时一直运行
 time_range = "093000-113000,133000-163000"
 time_range = ""
@@ -19,7 +20,7 @@ api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
 post_json = False
 post_success_code = 201
 
-cycle_time = 5  # 扫描周期
+cycle_time = 50  # 扫描周期
 enable_thread = True  # 启用线程
 thread_pool_size = 2  # 线程池大小
 
