@@ -2,7 +2,7 @@
 import time
 import config
 from log import Log
-from process import Sync
+from process import Process
 log = Log(config.print_log)
 
 
@@ -31,7 +31,7 @@ def cycle_exec(func, cycle_time=10):
 
         start_time = time.time()
         try:
-            re = func()
+            re = func(True)
         except Exception as e:
             log.log_error(str(e))
             raise
@@ -48,5 +48,5 @@ def cycle_exec(func, cycle_time=10):
 
 if __name__ == "__main__":
     print("synchronize start")
-    cycle_exec(Sync().sync, config.cycle_time)
+    cycle_exec(Process().sync, config.cycle_time)
     # TODO 优化对比算法，优化线程

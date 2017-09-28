@@ -5,7 +5,26 @@ import requests
 import json
 import collections
 import io
+from retry import retry
 
+def re(a):
+    if a==404:
+        return True
+    else:
+        return False
+def retry_if_io_error(exception):
+    return isinstance(exception, IOError)
+
+class My_exp(Exception):
+    pass
+
+@retry(retry_on_exception=My_exp)
+def raise_test():
+    print("1")
+    raise My_exp("123")
+
+
+print(raise_test())
 
 def update_dblist(dblist_path, dbfile_path):
     try:
@@ -66,13 +85,13 @@ def pop_dbpath(dbfile_path):
     except Exception as e:
         raise
 
-while 1:
-    p = pop_dbpath("dbf/")
-    if p:
-        print(p)
-    else:
-        print("finished")
-        break
+# while 1:
+#     p = pop_dbpath("dbf/")
+#     if p:
+#         print(p)
+#     else:
+#         print("finished")
+#         break
 
 
 def get():
@@ -132,6 +151,6 @@ def update_date(id, data):
     print(response.text)
 
 # update_date("59bfcbb99c94dd39d01bee39",{"hqzqjc":"东金科技"})
-# print(get_id())
+# print(cache_id_all())
 
 time.sleep(5)

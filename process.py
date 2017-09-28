@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*
-
 import time
 import shutil
 import os
@@ -11,7 +10,7 @@ from req import Req
 from tools import get_md5
 
 
-class Sync:
+class Process:
     def __init__(self):
         self.req = Req(retry_http=config.retry_http,
                   silence_http_multiplier=config.silence_http_multiplier,
@@ -21,13 +20,13 @@ class Sync:
         self.data = []
         self.updated_at = ""
 
-    def sync(self):
+    def sync(self, templet=False):
         db_now = self.req.get_db_file()
         db_prev = config.prev_file  # Last processed file
-        # if not db_now and os.path.exists(db_prev):
-        #     print("上传最后一个缓存")
-        #     db_now = db_prev
-        #     db_prev = ""
+        if templet:
+            print("上传最后一个缓存")
+            db_now = db_prev
+            db_prev = ""
         data = []
         data_cache = {}
         updated_at = ""
@@ -70,23 +69,21 @@ class Sync:
                     skip_count += 1
                 else:
                     for field in record:  # iteration every field
+                        if isinstance(record[field],float):
+                            record[field] = "%.2f" % record[field]
+
                         temp_row[field] = record[field]
                     temp_row['updated_at'] = updated_at
-                    # print(temp_row)
-                    # print(data_cache[record['HQZQDM']])
                     data.append(temp_row)
 
             print("Analysis of change and combination of data:", time.time() - start_time)
 
             # update db cache
-            shutil.copy(db_now, db_prev)
+            if not templet:
+                shutil.copy(db_now, db_prev)
 
             print("copy previous file:", time.time()-start_time)
-            # if db_prev:
-            #     shutil.copy(db_now, db_prev)
-            # else:
-            #     os.remove(config.prev_file)
-            # map key
+
             new_data, total = map_dict(data,
                                        config.map_rule['map'],
                                        config.map_rule['strict'],
@@ -99,25 +96,32 @@ class Sync:
                                  .format(updated_at=updated_at, total=total+skip_count, new=total))
             # start post all data
             try:
-                self.req.post_data(post_url=config.api_post,
-                                   data_list=new_data,
-                                   post_json=config.post_json,
-                                   enable_thread=config.enable_thread,
-                                   thread_pool_size=config.thread_pool_size,
-                                   post_success_code=config.post_success_code)
+                self.req.commit_data_list(post_url=config.api_post,
+                                          data_list=new_data,
+                                          post_json=config.post_json,
+                                          enable_thread=config.enable_thread,
+                                          thread_pool_size=config.thread_pool_size,
+                                          post_success_code=config.post_success_code)
 
             except Exception as e:
                 self.log.log_error(str(e))
 
-            print("upload data:", time.time() - start_time)
+            # print("\nupload data:", time.time() - start_time)
 
             return True
 
-
-    def cache_id(self):
+    def cache_id_all(self):
         table = DBF("tmp/nqhq.dbf", encoding="gbk", char_decode_errors="ignore")
         for record in table:
             try:
-                print(record["HQZQDM"], "  ", self.req.get_id(record["HQZQDM"]))
+                print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
+
+    def check(self):
+        # 随机抽取10个数据是否存在，否则重新上传一遍
+        # 检查total是否小于11000， 否则重新上传
+        pass
+
+
+# Process().cache_id_all()
