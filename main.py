@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*
 import time
 import config
+from cache import Cache
 from log import Log
 from process import Process
 log = Log(config.print_log)
 
 
+cache_tpl = Cache("tmp/uploaded_tpl.txt")
+process = Process()
 # 当前时间是否在某个时间段
 # 例如9:30-11:30,13:30-15:30
 # in_time_range("093000-113000,133000-153000")
@@ -20,7 +23,7 @@ def in_time_range(ranges):
 
 
 # 周期执行函数
-def cycle_exec(func, cycle_time=10):
+def cycle_exec(cycle_time=10):
     re = False
     while True:
         # 判断时间段
@@ -28,10 +31,24 @@ def cycle_exec(func, cycle_time=10):
             if not in_time_range(config.time_range):
                 time.sleep(cycle_time)
                 continue
-
         start_time = time.time()
         try:
-            re = func(True)
+            # 检查当天是否已上传模
+            if cache_tpl.get_value(time.strftime("%Y%m%d")):
+                log.log_success("upload new template")
+                process.sync(template=True)
+            else:
+                # 检查API是否正常
+                error_count = process.check_random()
+                print("miss count", error_count)
+                if error_count > 4:
+                    log.log_error("API error ，reupload template")
+                    if process.sync(template=True):
+                        continue
+
+                if process.sync(template=False):
+                    cache_tpl.put_item(time.strftime("%Y%m%d"), "1")
+
         except Exception as e:
             log.log_error(str(e))
             raise
@@ -48,5 +65,4 @@ def cycle_exec(func, cycle_time=10):
 
 if __name__ == "__main__":
     print("synchronize start")
-    cycle_exec(Process().sync, config.cycle_time)
-    # TODO 优化对比算法，优化线程
+    cycle_exec(cycle_time=config.cycle_time)

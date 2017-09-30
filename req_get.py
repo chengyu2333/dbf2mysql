@@ -82,6 +82,7 @@ class GetReq(BaseReq):
                     return self.get_db_file_from_folder(db_file_path, db_list_cache)
 
     # 根据证券代码获取并缓存ID
+    @retry(stop_max_attempt_number=3)
     def cache_id(self, code=833027):
         id_cache = "tmp/id_cache.txt"
         cache = Cache(id_cache)
@@ -102,4 +103,3 @@ class GetReq(BaseReq):
                 return result
             else:
                 return False
-

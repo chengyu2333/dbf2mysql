@@ -20,10 +20,10 @@ class Process:
         self.data = []
         self.updated_at = ""
 
-    def sync(self, templet=False):
+    def sync(self, template=False):
         db_now = self.req.get_db_file()
         db_prev = config.prev_file  # Last processed file
-        if templet:
+        if template:
             print("上传最后一个缓存")
             db_now = db_prev
             db_prev = ""
@@ -79,7 +79,7 @@ class Process:
             print("Analysis of change and combination of data:", time.time() - start_time)
 
             # update db cache
-            if not templet:
+            if not template:
                 shutil.copy(db_now, db_prev)
 
             print("copy previous file:", time.time()-start_time)
@@ -102,26 +102,45 @@ class Process:
                                           enable_thread=config.enable_thread,
                                           thread_pool_size=config.thread_pool_size,
                                           post_success_code=config.post_success_code)
-
             except Exception as e:
                 self.log.log_error(str(e))
-
-            # print("\nupload data:", time.time() - start_time)
-
             return True
 
     def cache_id_all(self):
-        table = DBF("tmp/nqhq.dbf", encoding="gbk", char_decode_errors="ignore")
+        table = DBF("tmp/prev.dbf", encoding="gbk", char_decode_errors="ignore")
         for record in table:
             try:
                 print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
 
-    def check(self):
+    def check_random(self):
+        import random
         # 随机抽取10个数据是否存在，否则重新上传一遍
         # 检查total是否小于11000， 否则重新上传
-        pass
+        path = "tmp/prev.dbf"
+        if not os.path.exists(path):
+            return 0
+        table = DBF(path, encoding="gbk", char_decode_errors="ignore")
+        success = 0
+        failed = 0
+        for record in table:
+            if random.random()<0.8:
+                continue
+            if success + failed > 10:
+                break
+            try:
+                re = self.req.cache_id(record["HQZQDM"])
+            except Exception as e:
+                print(str(e))
+            if re:
+                success += 1
+                # print("ok")
+            else:
+                failed += 1
+                # print("failed")
+        return failed
 
-
+# print(Process().check_random())
 # Process().cache_id_all()
+# Process().sync(False)

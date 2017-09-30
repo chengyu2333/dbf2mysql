@@ -30,15 +30,15 @@ class PostReq(BaseReq):
                     res = requests.put(url, data)
                     if res.status_code == 200:
                         if cb: cb(True, id)
-                        print("put成功")
+                        print(" put成功")
                         return True
                     else:
                         if cb: cb(False, id, res)
-                        print("put失败")
+                        print(" put失败")
                         raise Exception("put失败")
                 else:
                     if cb: cb(True, id)
-                    print("不需要同步")
+                    print(" 不需要同步")
                     return True
             else:
                 raise Exception("get remote id failed")
@@ -48,11 +48,11 @@ class PostReq(BaseReq):
                 id = json.loads(res.text)['id']
                 id_cache.put_item(data['hqzqdm'], id)
                 if cb: cb(True, id)
-                print("post成功")
+                print(" post成功")
                 return True
             else:
                 if cb: cb(False, id, res)
-                print("post失败",res.status_code, res.text)
+                print("\npost失败",res.status_code, res.text)
                 print(data)
                 raise Exception("post failed")
 

@@ -3,9 +3,9 @@ import time
 
 # 数据文件的文件名或文件夹名
 # db_file_path = "http://183.60.7.32/nqhq.dbf"
-db_file_path = "tmp/nqhq.dbf"
+# db_file_path = "tmp/nqhq.dbf"
 # db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
-# db_file_path = lambda :"dbf/"
+db_file_path = lambda :"dbf/"
 
 # 数据文件缓存路径
 db_list_cache = lambda : "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")

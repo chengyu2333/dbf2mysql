@@ -6,6 +6,8 @@ import collections
 
 class Cache:
     def __init__(self, path="", type="kv"):
+        if not os.path.exists(path):
+            open(path,"w", encoding="utf-8").close()
         self.path = path
 
     # return dict
@@ -19,7 +21,7 @@ class Cache:
                 odict[line[0]] = line[1]
         return odict
 
-    def write_cache(self,data,default="0"):
+    def write_cache(self, data, default="0"):
         lines = ""
         for d in data:
             if isinstance(data, dict):
@@ -52,7 +54,7 @@ class Cache:
         pass
 
     def put_item(self, key, value):
-        with open(self.path, "a+") as f:
+        with open(self.path, "a+", encoding="utf-8") as f:
             f.write(str(key) + " " + str(value) + "\n")
             return True
 
