@@ -2,7 +2,6 @@
 from req_base import BaseReq
 import config
 import os
-import collections
 import json
 import requests
 from urllib import request
@@ -16,6 +15,9 @@ class GetReq(BaseReq):
            wait_exponential_multiplier=config.silence_http_multiplier * 1000,
            wait_exponential_max=config.silence_http_multiplier_max * 1000)
     def get_db_file_from_url(self, url, path):
+        """
+        下载数据文件并返回路径
+        """
         create_time_old = None
         if os.path.exists(path):
             create_time_old = os.stat(path).st_ctime
@@ -27,6 +29,9 @@ class GetReq(BaseReq):
             return False
 
     def get_db_file_from_file(self, path):
+        """
+        检测数据文件变动
+        """
         time_temp_path = "tmp/old_time.tmp"
         create_time = os.stat(path).st_ctime
         if os.path.exists(time_temp_path):
@@ -43,8 +48,8 @@ class GetReq(BaseReq):
         else:
             return False
 
-    # update db file cache
     def update_dblist_cache(self, db_list_cache, db_file_path):
+        """更新数据文件列表缓存"""
         cache = Cache(db_list_cache)
         try:
             dblist = os.listdir(db_file_path)
@@ -58,6 +63,9 @@ class GetReq(BaseReq):
 
     # cache file list and pop File path
     def get_db_file_from_folder(self, db_file_path, db_list_cache, desc=False):
+        """
+        从文件夹获取数据文件路径
+        """
         cache = Cache(db_list_cache)
         try:
             self.update_dblist_cache(db_list_cache, db_file_path)
@@ -66,6 +74,9 @@ class GetReq(BaseReq):
             raise
 
     def get_db_file(self):
+        """
+        获取dbf数据文件路径        
+        """
         if type(config.db_file_path) is not str:db_file_path = config.db_file_path()
         else:db_file_path = config.db_file_path
 
@@ -73,7 +84,7 @@ class GetReq(BaseReq):
         else:db_list_cache = config.db_list_cache
 
         if "http://" in db_file_path or "https://" in db_file_path:
-            self.get_db_file_from_url(config.db_url, "tmp/dbf_cache_pool/cache.dbf")
+            return self.get_db_file_from_url(config.db_url, "tmp/dbf_cache_pool/cache.dbf")
         else:
             if os.path.exists(db_file_path):
                 if os.path.isfile(db_file_path):  # path is file
@@ -81,9 +92,11 @@ class GetReq(BaseReq):
                 else:  # if path is folder
                     return self.get_db_file_from_folder(db_file_path, db_list_cache)
 
-    # 根据证券代码获取并缓存ID
     @retry(stop_max_attempt_number=3)
     def cache_id(self, code=833027):
+        """
+        根据证券代码获取并缓存ID
+        """
         id_cache = "tmp/id_cache.txt"
         cache = Cache(id_cache)
         code = str(code)

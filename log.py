@@ -14,7 +14,7 @@ class Log:
 
     def log_error(self,msg):
         f = io.open("logs/" + time.strftime("%Y-%m-%d", time.localtime()) + " errors.log", 'a', encoding="utf-8")
-        log = "\r\n" + time.ctime() + " | \t" + msg + "\r\n"
+        log = "\r\n" + time.ctime() + " | " + msg + "\r\n"
         if self.print_log:
             sys.stdout.write("\033[1;31m" + str(log) + "\033[0m")
         f.write(log)
@@ -22,7 +22,7 @@ class Log:
 
     def log_success(self,msg):
         f = io.open("logs/" + time.strftime("%Y-%m-%d", time.localtime()) + " success.log", 'a', encoding="utf-8")
-        log = "\r\n" + time.ctime() + " | \t" + msg + "\r\n"
+        log = "\r\n" + time.ctime() + " | " + msg + "\r\n"
         if self.print_log:
             sys.stdout.write("\033[1;33m" + str(log) + "\033[0m")
         f.write(log)

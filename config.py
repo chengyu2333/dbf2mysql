@@ -5,15 +5,17 @@ import time
 # db_file_path = "http://183.60.7.32/nqhq.dbf"
 # db_file_path = "tmp/nqhq.dbf"
 # db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
-db_file_path = lambda :"dbf/"
+db_file_path = "dbf/"
 
-# 数据文件缓存路径
-db_list_cache = lambda : "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
+# 数据文件列表缓存路径
+db_list_cache = lambda: "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
 prev_file = "tmp/prev.dbf"
-# 程序运行的时间段，格式%H%M%S, 空字符时一直运行
+
+# 程序运行的时间段，格式%H%M%S, 为空时一直运行
 # time_range = "093000-113000,133000-163000"
 time_range = ""
 
+# API配置
 api_post = "http://api.chinaipo.com/markets/v1/rthq/"
 api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/"
 api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
@@ -22,7 +24,7 @@ post_success_code = 201
 
 cycle_time = 10  # 扫描周期
 enable_thread = True  # 启用线程
-thread_pool_size = 2  # 线程池大小
+thread_pool_size = 10  # 线程池大小
 
 # 超时时间
 timeout_http = 30
@@ -33,7 +35,6 @@ silence_http_multiplier_max = 10
 
 # 超时/出错重试次数
 retry_http = 5
-retry_db = 5
 
 print_log = True  # 输出日志到控制台
 

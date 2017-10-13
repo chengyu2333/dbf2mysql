@@ -12,19 +12,40 @@ import threadpool
 
 class PostReq(BaseReq):
 
-    @retry
+    @retry(stop_max_attempt_number=config.retry_http,
+           wait_exponential_multiplier=config.silence_http_multiplier * 1000,
+           wait_exponential_max=config.silence_http_multiplier_max * 1000)
     def commit_data(self, data, cb=None):
+        """
+        读取ID缓存文件到dict
+        读取DBF文件
+        映射处理数据
+        
+        遍历记录
+            @retry
+            根据ID检测是否存在这条记录（返回False或update_at）
+                update_at：
+                    对比update_at：
+                        ＜：PUT更新
+                            是否返回200
+                                是：成功
+                                否：raise抛异常
+                        =：成功
+                False：POST添加，缓存ID
+                    是否返回201
+                        是：成功
+                        否：raise抛异常
+        保存ID缓存到文件
+        """
         id_cache = Cache("tmp/id_cache.txt")
         id = id_cache.get_value(data['hqzqdm'])
-        if id:
+        if id:  # cache have id
             url = config.api_put.format(id=id)
             response = requests.get(url)
-            if response.status_code == 200:
+            if response.status_code == 200:  # remote have id
                 updated_at_remote = json.loads(response.text)['updated_at']
                 updated_at_remote = time.strptime(updated_at_remote, "%Y年%m月%d日 %H:%M:%S")
                 updated_at_local = time.strptime(data['updated_at'],"%Y-%m-%dT%H:%M:%S")
-                # print("remote", updated_at_remote)
-                # print("local", updated_at_local)
                 # put
                 if updated_at_local and updated_at_remote < updated_at_local:
                     res = requests.put(url, data)
@@ -41,6 +62,8 @@ class PostReq(BaseReq):
                     print(" 不需要同步")
                     return True
             else:
+                # 删除缓存ID
+                id_cache.remove_item(data['hqzqdm'])
                 raise Exception("get remote id failed")
         else:  # post
             res = requests.post(config.api_post, data=data, timeout=self._timeout_http)
@@ -56,8 +79,8 @@ class PostReq(BaseReq):
                 print(data)
                 raise Exception("post failed")
 
-    # batch post data to webservice
     def commit_data_list(self, post_url, data_list, post_json=False, enable_thread=False, thread_pool_size=10, post_success_code=201):
+        """ batch commit data """
         self.post_success_code = post_success_code
         self.data_total = len(data_list)
         if self.data_total: view_bar(0, self.data_total)
