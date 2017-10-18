@@ -2,6 +2,11 @@ import os
 from req import Req
 from cache import Cache
 
+
+def check_total():
+    pass
+
+
 def check_random():
     """
     检查API服务器是否正常

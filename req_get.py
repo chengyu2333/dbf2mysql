@@ -75,7 +75,7 @@ class GetReq(BaseReq):
 
     def get_db_file(self):
         """
-        获取dbf数据文件路径        
+        获取dbf数据文件路径 
         """
         if type(config.db_file_path) is not str:db_file_path = config.db_file_path()
         else:db_file_path = config.db_file_path

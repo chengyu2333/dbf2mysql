@@ -10,51 +10,61 @@ from req import Req
 from tools import get_md5
 
 
-class Process:
+class Sync:
     def __init__(self):
         self.req = Req(retry_http=config.retry_http,
                   silence_http_multiplier=config.silence_http_multiplier,
                   silence_http_multiplier_max=config.silence_http_multiplier_max,
                   timeout_http=config.timeout_http)
         self.log = Log(print_log=config.print_log)
-        self.data = []
-        self.updated_at = ""
+        self.db_now = ""
+        self.db_prev = ""
+        self.start_time = time.time()
+        self.table = None
+        self.table_prev = None
+        self.new_data = []
 
-    def sync(self, db_now, db_prev=""):
+    def get(self):
         """
-        同步一个dbf文件
-        :param db_now: 待同步的dbf文件路径
-        :param db_prev: 用于变动对比的dbf文件路径
-        :return: 成功与否
+        获取数据文件
+        :return: table，table_prev
         """
-        start_time = time.time()
-        # db_now = self.req.get_db_file()
-        # db_prev = config.prev_file  # Last processed file
-        if not db_now or not os.path.exists(db_now):
+        self.db_now = self.req.get_db_file()
+        self.db_prev = config.prev_file
+        # 文件是否存在
+        if not self.db_now or not os.path.exists(self.db_now):
             return False
-
-        data = []
-        data_prev = {}
-        table_prev = None
-        updated_at = ""
-        skip_count = 0
-
-        # read dbf file
+        # 读文件表
         try:
-            # print("new db:", get_md5(db_now))
-            table = DBF(db_now, encoding="gbk", char_decode_errors="ignore")
-            if os.path.exists(db_prev):
-                # print("last db:", get_md5(db_prev))
-                table_prev = DBF(db_prev, encoding="gbk", char_decode_errors="ignore")
+            # print("new db:", get_md5(self.db_now))
+            self.table = DBF(self.db_now, encoding="gbk", char_decode_errors="ignore")
+            if os.path.exists(self.db_prev):
+                # print("last db:", get_md5(self.db_prev))
+                self.table_prev = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+            return self.table, self.table_prev
         except Exception as e:
             self.log.log_error(str(e))
             raise
+
+    def process(self, table=None, table_prev=None):
+        """
+        处理、映射表数据
+        :param table: 
+        :param table_prev: 
+        :return: new_data
+        """
+        skip_count = 0
+        # 原始表数据
+        table = table or self.table
+        table_prev = table_prev or self.table_prev
+        # 处理后的数据
+        data = []
+        data_prev = {}
+
         # convert table_prev to dict
         if table_prev:
             for record in table_prev:
                 data_prev[record['HQZQDM']] = record
-
-        self.log.log_success("Start synchronize, prev dbf: " + str(db_prev) + " now dbf:" + str(db_now))
 
         # get update_at
         for record in table:
@@ -63,6 +73,7 @@ class Process:
                 updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
                 updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
                 break
+
         # read record as dict append to list
         for record in table:  # iteration each row
             temp_row = {}
@@ -76,28 +87,48 @@ class Process:
                     temp_row[field] = record[field]
                 temp_row['updated_at'] = updated_at
                 data.append(temp_row)
-        # update db cache
-        shutil.copy(db_now, db_prev)
+
         # map dict
         new_data, total = map_dict(data,
                                    config.map_rule['map'],
                                    config.map_rule['strict'],
                                    config.map_rule['lower'],
                                    swap=config.map_rule['swap'])
+        # update db cache
+        shutil.copy(self.db_now, self.db_prev)
+
+        self.new_data += new_data
         self.log.log_success("Process spend: {time} update at: {up_at}, total record: {total}, new record: {new}"
-                             .format(up_at=updated_at, total=total + skip_count, new=total, time=time.time() - start_time))
+                             .format(up_at=updated_at, total=total + skip_count, new=total,
+                                     time=time.time() - self.start_time))
+        return new_data
+
+    def upload(self, data=None):
+        """
+        上传数据
+        :param data: dict data
+        :return: True or False
+        """
+        data = data or self.new_data
         # start commit all data
         try:
             self.req.commit_data_list(post_url=config.api_post,
-                                      data_list=new_data,
+                                      data_list=data,
                                       post_json=config.post_json,
                                       enable_thread=config.enable_thread,
                                       thread_pool_size=config.thread_pool_size,
                                       post_success_code=config.post_success_code)
         except Exception as e:
             self.log.log_error(str(e))
-        self.log.log_success("Commit finished,spend time:" + str(time.time() - start_time))
+            return False
+        self.new_data = None
+        self.log.log_success("Commit finished,spend time:" + str(time.time() - self.start_time))
         return True
+
+    def sync(self):
+        self.get()
+        self.process()
+        self.upload()
 
     def reset(self):
         """重置一天的同步"""
@@ -115,6 +146,3 @@ class Process:
             except Exception as e:
                 print(str(e))
 
-# print(Process().check_random())
-# Process().cache_id_all()
-# Process().sync(False)

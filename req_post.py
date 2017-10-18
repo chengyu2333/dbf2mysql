@@ -42,7 +42,7 @@ class PostReq(BaseReq):
         if id:  # cache have id
             url = config.api_put.format(id=id)
             response = requests.get(url)
-            if response.status_code == 200:  # remote have id
+            if response.status_code == 200:  # api server have id
                 updated_at_remote = json.loads(response.text)['updated_at']
                 updated_at_remote = time.strptime(updated_at_remote, "%Y年%m月%d日 %H:%M:%S")
                 updated_at_local = time.strptime(data['updated_at'],"%Y-%m-%dT%H:%M:%S")
@@ -55,7 +55,7 @@ class PostReq(BaseReq):
                         return True
                     else:
                         if cb: cb(False, id, res)
-                        print(" put失败")
+                        print(" put失败", res.status_code)
                         raise Exception("put失败")
                 else:
                     if cb: cb(True, id)
@@ -75,7 +75,8 @@ class PostReq(BaseReq):
                 return True
             else:
                 if cb: cb(False, id, res)
-                print("\npost失败",res.status_code, res.text)
+                # print("\npost失败",res.status_code, res.text)
+                print("\npost失败", res.status_code)
                 print(data)
                 raise Exception("post failed")
 

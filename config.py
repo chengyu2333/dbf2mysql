@@ -23,6 +23,7 @@ post_json = False
 post_success_code = 201
 
 cycle_time = 10  # 扫描周期
+upload_cycle = 240  # 上传周期
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小
 
@@ -34,7 +35,7 @@ silence_http_multiplier = 2
 silence_http_multiplier_max = 10
 
 # 超时/出错重试次数
-retry_http = 5
+retry_http = 1
 
 print_log = True  # 输出日志到控制台
 
