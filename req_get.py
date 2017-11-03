@@ -55,9 +55,9 @@ class GetReq(BaseReq):
             dblist = os.listdir(db_file_path)
             dblist.sort()
             if os.path.exists(db_list_cache):
-                cache.update_cache(dblist, "0")
+                cache.update(dblist, "0")
             else:
-                cache.write_cache(dblist, "0")
+                cache.write_by_dict(dblist, "0")
         except:
             raise
 
@@ -69,7 +69,7 @@ class GetReq(BaseReq):
         cache = Cache(db_list_cache)
         try:
             self.update_dblist_cache(db_list_cache, db_file_path)
-            return db_file_path + cache.pop_item_v("0", "1")
+            return db_file_path + cache.get_and_update_item_by_value("0", "1")
         except Exception as e:
             raise
 
@@ -93,9 +93,11 @@ class GetReq(BaseReq):
                     return self.get_db_file_from_folder(db_file_path, db_list_cache)
 
     @retry(stop_max_attempt_number=3)
-    def cache_id(self, code=833027):
+    def cache_id(self, code=833027, only_remote = False):
         """
         根据证券代码获取并缓存ID
+        code: 证券代码
+        only_remote: 不从本地获取
         """
         id_cache = "tmp/id_cache.txt"
         cache = Cache(id_cache)
@@ -103,7 +105,7 @@ class GetReq(BaseReq):
         api_url = config.api_get.format(code = code)
         # get id from cache
         if os.path.exists(id_cache):
-            id = cache.get_value(code)
+            id = cache.get_value_by_key(code)
             if id: return id[1]
         # get id from api
         response = requests.get(api_url)

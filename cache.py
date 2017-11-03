@@ -14,7 +14,7 @@ class Cache:
             open(path,"w", encoding="utf-8").close()
         self.path = path
 
-    def read_cache(self):
+    def read_as_dict(self):
         """
         读取全部缓存
         :return: dict
@@ -28,7 +28,7 @@ class Cache:
                 odict[line[0]] = line[1]
         return odict
 
-    def write_cache(self, data, default="0"):
+    def write_by_dict(self, data, default="0"):
         """
         写缓存
         :param data: 数据，dict|list
@@ -46,10 +46,10 @@ class Cache:
             return True
 
     # data为list时需要指定value的default值
-    def update_cache(self, data, default="0"):
+    def update(self, data, default="0"):
         """
         增量添加缓存，重复的key的将忽略
-        :param data: 数据
+        :param data: dict | list
         :param default: 
         :return: 
         """
@@ -79,7 +79,7 @@ class Cache:
             return True
 
     # return tuple
-    def pop_item_v(self, get_value="0", set_value="1"):
+    def get_and_update_item_by_value(self, get_value="0", set_value="1"):
         dbdict = collections.OrderedDict()
         try:
             with open(self.path, 'r+', encoding="utf-8") as f:
@@ -101,7 +101,7 @@ class Cache:
         except Exception as e:
             raise
 
-    def remove_item(self, key):
+    def remove_item_by_key(self, key):
         dbdict = collections.OrderedDict()
         try:
             with open(self.path, 'r+', encoding='utf-8') as f:
@@ -124,7 +124,7 @@ class Cache:
         except Exception as e:
             raise e
 
-    def get_value(self, key, then="rm|set=1"):
+    def get_value_by_key(self, key, then="rm|set=1"):
         try:
             with open(self.path, 'r+', encoding="utf-8") as f:
                 lines = f.readlines()
@@ -138,6 +138,6 @@ class Cache:
         except Exception as e:
             raise
 
-c = Cache("tmp/list_cache_20170929.txt")
-# re = c.remove_item("nqhq.dbf.091049")
+# c = Cache("tmp/list_cache_20170929.txt")
+# re = c.remove_item_by_key("nqhq.dbf.091049")
 # print(re)

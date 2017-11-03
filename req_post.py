@@ -11,7 +11,7 @@ import threadpool
 
 
 class PostReq(BaseReq):
-
+    # 提交一条数据
     @retry(stop_max_attempt_number=config.retry_http,
            wait_exponential_multiplier=config.silence_http_multiplier * 1000,
            wait_exponential_max=config.silence_http_multiplier_max * 1000)
@@ -37,19 +37,26 @@ class PostReq(BaseReq):
                         否：raise抛异常
         保存ID缓存到文件
         """
+        # TODO 优化缓存策略
         id_cache = Cache("tmp/id_cache.txt")
-        id = id_cache.get_value(data['hqzqdm'])
-        if id:  # cache have id
+        id = id_cache.get_value_by_key(data['hqzqdm'])
+        # 如果有缓存这个ID
+        if id:
             url = config.api_put.format(id=id)
             response = requests.get(url)
+            # 如果服务器存在这个ID
             if response.status_code == 200:  # api server have id
                 updated_at_remote = json.loads(response.text)['updated_at']
                 updated_at_remote = time.strptime(updated_at_remote, "%Y年%m月%d日 %H:%M:%S")
-                updated_at_local = time.strptime(data['updated_at'],"%Y-%m-%dT%H:%M:%S")
-                # put
+                updated_at_local = time.strptime(data['updated_at'], "%Y-%m-%dT%H:%M:%S")
+                # 如果远程update_at ＜ 待传update_at则put该数据
                 if updated_at_local and updated_at_remote < updated_at_local:
                     res = requests.put(url, data)
-                    if res.status_code == 200:
+                    if res.status_code == 200:  # put success
+                        if cb: cb(True, id)
+                        print(" put成功")
+                        return True
+                    elif res.status_code:  # gateway timeout
                         if cb: cb(True, id)
                         print(" put成功")
                         return True
@@ -61,13 +68,15 @@ class PostReq(BaseReq):
                     if cb: cb(True, id)
                     print(" 不需要同步")
                     return True
+            # 服务器不存在这个ID
             else:
-                # 删除缓存ID
-                id_cache.remove_item(data['hqzqdm'])
+                # 删除这个ID的缓存
+                id_cache.remove_item_by_key(data['hqzqdm'])
                 raise Exception("get remote id failed")
-        else:  # post
+        # 缓存里没有这个ID，POST上传
+        else:
             res = requests.post(config.api_post, data=data, timeout=self._timeout_http)
-            if res.status_code == 201:
+            if res.status_code == 201: # post success
                 id = json.loads(res.text)['id']
                 id_cache.put_item(data['hqzqdm'], id)
                 if cb: cb(True, id)
@@ -75,12 +84,11 @@ class PostReq(BaseReq):
                 return True
             else:
                 if cb: cb(False, id, res)
-                # print("\npost失败",res.status_code, res.text)
-                print("\npost失败", res.status_code)
-                print(data)
+                self.log.log_error("\npost失败 " + str(res.status_code) + "\nrequest data:" + str(data) + "\nresponse:" + res.text)
                 raise Exception("post failed")
 
-    def commit_data_list(self, post_url, data_list, post_json=False, enable_thread=False, thread_pool_size=10, post_success_code=201):
+    # 批量提交数据
+    def commit_data_list(self, post_url, data_list, post_json, enable_thread=False, thread_pool_size=10, post_success_code=201):
         """ batch commit data """
         self.post_success_code = post_success_code
         self.data_total = len(data_list)
@@ -93,6 +101,7 @@ class PostReq(BaseReq):
             if enable_thread:
                 args = []
                 for data in data_list:
+                    print(data)
                     args.append(([data, self.cb], None))
                     # args.append(([post_url, data, post_json, self.__callback], None))
                 reqs = threadpool.makeRequests(self.commit_data, args)
@@ -102,14 +111,17 @@ class PostReq(BaseReq):
                 reqs.clear()
             else:
                 for d in data_list:
-                    # self.post_try(post_url, d, post_json, self.__callback)
                     result = self.commit_data(d)
+                    if result:
+                        self.success_count += 1
+            count = self.success_count
             self.success_count = 0
             self.processed_count = 0
-
+            return count
         except Exception:
             raise
 
+    # 提交完毕的回调
     def cb(self, result, id="", res=None):
         if res:
             print(res)
@@ -119,6 +131,7 @@ class PostReq(BaseReq):
         view_bar(self.processed_count, self.data_total)
         print(" ", self.success_count, " ", id, end="")
 
+    # 暂不需要
     def __callback(self, *args):
         self.processed_count += 1
         response = args[0]

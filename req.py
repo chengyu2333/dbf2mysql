@@ -9,7 +9,7 @@ class Req(PostReq, GetReq):
 
     # def commit_data(self, data):
     #     id_cache = Cache("tmp/id_cache.txt")
-    #     id = id_cache.get_value(data['hqzqdm'])
+    #     id = id_cache.get_value_by_key(data['hqzqdm'])
     #     if id:
     #         url = config.api_put.format(id=id)
     #         response = requests.get(url)

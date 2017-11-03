@@ -38,7 +38,7 @@ def check_random():
     return failed
 
 def check_total():
-    cache_id = Cache("tmp/id_cache").read_cache()
+    cache_id = Cache("tmp/id_cache").read_as_dict()
     print(len(cache_id))
 
 check_total()

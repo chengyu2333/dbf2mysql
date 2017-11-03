@@ -19,7 +19,6 @@ class Sync:
         self.log = Log(print_log=config.print_log)
         self.db_now = ""
         self.db_prev = ""
-        self.start_time = time.time()
         self.table = None
         self.table_prev = None
         self.new_data = []
@@ -31,20 +30,29 @@ class Sync:
         """
         self.db_now = self.req.get_db_file()
         self.db_prev = config.prev_file
-        # 文件是否存在
-        if not self.db_now or not os.path.exists(self.db_now):
-            return False
+        # db_now文件是否存在
+        # if not self.db_now or not os.path.exists(self.db_now):
+        #     return False
+
         # 读文件表
         try:
-            # print("new db:", get_md5(self.db_now))
-            self.table = DBF(self.db_now, encoding="gbk", char_decode_errors="ignore")
-            if os.path.exists(self.db_prev):
-                # print("last db:", get_md5(self.db_prev))
-                self.table_prev = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
-            return self.table, self.table_prev
+            # db_now不存在
+            if not self.db_now or not os.path.exists(self.db_now):
+                # db_prev不存在
+                if not self.db_prev or not os.path.exists(self.db_prev):
+                    print("no file need sync")
+                    return False
+                else:
+                    self.table = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+            else:
+                self.table = DBF(self.db_now, encoding="gbk", char_decode_errors="ignore")
+                if os.path.exists(self.db_prev):
+                    self.table_prev = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+            self.log.log_success("Start process, prev dbf: " + str(self.db_prev) + " now dbf:" + str(self.db_now))
         except Exception as e:
             self.log.log_error(str(e))
             raise
+        return self.table, self.table_prev
 
     def process(self, table=None, table_prev=None):
         """
@@ -53,6 +61,7 @@ class Sync:
         :param table_prev: 
         :return: new_data
         """
+        start_time = time.time()
         skip_count = 0
         # 原始表数据
         table = table or self.table
@@ -69,9 +78,13 @@ class Sync:
         # get update_at
         for record in table:
             if record['HQZQDM'] == "000000":
-                updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
-                updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
-                updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
+                # 如果update_at不是今天，那么就设置为今天 (for data template)
+                if str(record['HQZQJC']) == time.strftime("%Y%m%d"):
+                    updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
+                    updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
+                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
+                else:
+                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S")
                 break
 
         # read record as dict append to list
@@ -95,12 +108,13 @@ class Sync:
                                    config.map_rule['lower'],
                                    swap=config.map_rule['swap'])
         # update db cache
-        shutil.copy(self.db_now, self.db_prev)
+        if self.db_now:
+            shutil.copy(self.db_now, self.db_prev)
 
-        self.new_data += new_data
+        self.new_data = new_data
         self.log.log_success("Process spend: {time} update at: {up_at}, total record: {total}, new record: {new}"
                              .format(up_at=updated_at, total=total + skip_count, new=total,
-                                     time=time.time() - self.start_time))
+                                     time=time.time() - start_time))
         return new_data
 
     def upload(self, data=None):
@@ -109,6 +123,7 @@ class Sync:
         :param data: dict data
         :return: True or False
         """
+        start_time = time.time()
         data = data or self.new_data
         # start commit all data
         try:
@@ -122,7 +137,7 @@ class Sync:
             self.log.log_error(str(e))
             return False
         self.new_data = None
-        self.log.log_success("Commit finished,spend time:" + str(time.time() - self.start_time))
+        self.log.log_success("Commit finished,spend time:" + str(time.time() - start_time))
         return True
 
     def sync(self):
@@ -132,17 +147,17 @@ class Sync:
 
     def reset(self):
         """重置一天的同步"""
-        del_list = ["tmp/id_cache.txt", config.prev_file, "tmp/old_time.tmp"]
+        # 要删除的文件列表
+        del_list = ["tmp/id_cache.txt", "tmp/old_time.tmp"]
         for d in del_list:
             if os.path.exists(d):
                 os.remove(d)
 
     def cache_id_all(self):
         """缓存全部id"""
-        table = DBF("tmp/prev.dbf", encoding="gbk", char_decode_errors="ignore")
+        table = DBF(config.prev_file, encoding="gbk", char_decode_errors="ignore")
         for record in table:
             try:
                 print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
-

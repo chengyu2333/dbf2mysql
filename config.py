@@ -5,7 +5,7 @@ import time
 # db_file_path = "http://183.60.7.32/nqhq.dbf"
 # db_file_path = "tmp/nqhq.dbf"
 # db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
-db_file_path = "dbf/"
+db_file_path = "../dbf/"
 
 # 数据文件列表缓存路径
 db_list_cache = lambda: "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
@@ -13,7 +13,7 @@ prev_file = "tmp/prev.dbf"
 
 # 程序运行的时间段，格式%H%M%S, 为空时一直运行
 # time_range = "093000-113000,133000-163000"
-time_range = ""
+time_range_sync = ""
 
 # API配置
 api_post = "http://api.chinaipo.com/markets/v1/rthq/"
@@ -22,13 +22,13 @@ api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
 post_json = False
 post_success_code = 201
 
-cycle_time = 10  # 扫描周期
-upload_cycle = 240  # 上传周期
+cycle_time = 10  # 程序扫描最小周期时间
+upload_cycle = 240  # 文件上传周期时间
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小
 
 # 超时时间
-timeout_http = 30
+timeout_http = 300
 
 # 重试等待时间（指数形式）
 silence_http_multiplier = 2
