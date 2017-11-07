@@ -79,12 +79,12 @@ class Sync:
         for record in table:
             if record['HQZQDM'] == "000000":
                 # 如果update_at不是今天，那么就设置为今天 (for data template)
-                if str(record['HQZQJC']) == time.strftime("%Y%m%d"):
+                if str(record['HQZQJC']) == time.strftime("%Y%m%d") or True:
                     updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
                     updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
                     updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
                 else:
-                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S")
+                    updated_at = time.strftime("%Y-%m-%dT09:09:00")
                 break
 
         # read record as dict append to list
@@ -123,6 +123,7 @@ class Sync:
         :param data: dict data
         :return: True or False
         """
+        print("Start commit, total:", len(data))
         start_time = time.time()
         data = data or self.new_data
         # start commit all data
@@ -146,7 +147,7 @@ class Sync:
         self.upload()
 
     def reset(self):
-        """重置一天的同步"""
+        """重置缓存"""
         # 要删除的文件列表
         del_list = ["tmp/id_cache.txt", "tmp/old_time.tmp"]
         for d in del_list:

@@ -94,6 +94,7 @@ class GetReq(BaseReq):
 
     @retry(stop_max_attempt_number=3)
     def cache_id(self, code=833027, only_remote = False):
+        # TODO only remote
         """
         根据证券代码获取并缓存ID
         code: 证券代码

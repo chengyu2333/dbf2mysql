@@ -20,18 +20,17 @@ def cycle_exec(cycle_time=10):
     log = Log(print_log=config.print_log)
     data_cache = []
     cycle_times = 0  # 循环的次数
-
+    sync = Sync()
     while True:
-        cycle_time += 1
+        # cycle_time += 1
         start_time_cycle = time.time()
 
         # 判断时间段
         if config.time_range_sync:
             if not in_time_range(config.time_range_sync):
-                time.sleep(cycle_time)
+                time.sleep(10)
                 continue
         try:
-            sync = Sync()
 
             # 检查今天是否同步过，否则初始化系统
             if not cache_last_run.get_value_by_key(time.strftime("%Y%m%d")):
@@ -60,12 +59,12 @@ def cycle_exec(cycle_time=10):
             # 缓存待同步数据，多批数据只保留最新的更新时间
             data = sync.process()
 
-            if len(data) <= 1:
+            if len(data) == 1:
                 if len(data_cache) == 0:
                     data_cache.append(data[0])
                 else:
                     data_cache[0] = data[0]
-            else:
+            elif len(data) > 1:
                 for d in data:
                     if d['hqzqdm'] == "000000":
                         if len(data_cache) == 0:
@@ -82,12 +81,17 @@ def cycle_exec(cycle_time=10):
             n = 1  # 只有时间变动，不需要提交
             t = 30
             if len(data_cache) > n:
-                if time.time() - last_time_sync > t:
+                print(" ", len(data_cache) ,end="")
+                if len(data_cache) > 100:  # 超过100则立即同步
                     last_time_sync = time.time()  # 重置上次同步的时间
-                    print("len:", len(data_cache))
                     sync.upload(data_cache)
                     data_cache.clear()
-                    continue  # 立即跳出循环，不休眠
+                    continue
+                if time.time() - last_time_sync > t:
+                    last_time_sync = time.time()
+                    sync.upload(data_cache)
+                    data_cache.clear()
+                    continue
 
         except Exception as e:
             log.log_error(str(e))

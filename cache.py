@@ -124,7 +124,8 @@ class Cache:
         except Exception as e:
             raise e
 
-    def get_value_by_key(self, key, then="rm|set=1"):
+    def get_value_by_key(self, key, order=False):
+        # TODO 倒序
         try:
             with open(self.path, 'r+', encoding="utf-8") as f:
                 lines = f.readlines()
@@ -137,6 +138,10 @@ class Cache:
                     return None
         except Exception as e:
             raise
+
+    def get_value_middle(self):
+        # TODO 获取中间值
+        pass
 
 # c = Cache("tmp/list_cache_20170929.txt")
 # re = c.remove_item_by_key("nqhq.dbf.091049")

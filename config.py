@@ -2,8 +2,6 @@
 import time
 
 # 数据文件的文件名或文件夹名
-# db_file_path = "http://183.60.7.32/nqhq.dbf"
-# db_file_path = "tmp/nqhq.dbf"
 # db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
 db_file_path = "../dbf/"
 
@@ -23,7 +21,7 @@ post_json = False
 post_success_code = 201
 
 cycle_time = 10  # 程序扫描最小周期时间
-upload_cycle = 240  # 文件上传周期时间
+upload_cycle = 24  # 文件上传周期时间
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小
 

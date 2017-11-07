@@ -54,11 +54,11 @@ class PostReq(BaseReq):
                     res = requests.put(url, data)
                     if res.status_code == 200:  # put success
                         if cb: cb(True, id)
-                        print(" put成功")
+                        print(" put成功\r", end="")
                         return True
                     elif res.status_code:  # gateway timeout
                         if cb: cb(True, id)
-                        print(" put成功")
+                        print(" put成功\r", end="")
                         return True
                     else:
                         if cb: cb(False, id, res)
@@ -66,13 +66,13 @@ class PostReq(BaseReq):
                         raise Exception("put失败")
                 else:
                     if cb: cb(True, id)
-                    print(" 不需要同步")
+                    print(" 不需要同步\r", end="")
                     return True
             # 服务器不存在这个ID
             else:
                 # 删除这个ID的缓存
                 id_cache.remove_item_by_key(data['hqzqdm'])
-                raise Exception("get remote id failed")
+                # raise Exception("get remote id failed")
         # 缓存里没有这个ID，POST上传
         else:
             res = requests.post(config.api_post, data=data, timeout=self._timeout_http)
@@ -80,11 +80,11 @@ class PostReq(BaseReq):
                 id = json.loads(res.text)['id']
                 id_cache.put_item(data['hqzqdm'], id)
                 if cb: cb(True, id)
-                print(" post成功")
+                print(" post成功\r",end="")
                 return True
             else:
                 if cb: cb(False, id, res)
-                self.log.log_error("\npost失败 " + str(res.status_code) + "\nrequest data:" + str(data) + "\nresponse:" + res.text)
+                self.log.log_error("\npost失败 " + str(res.status_code))
                 raise Exception("post failed")
 
     # 批量提交数据
@@ -96,12 +96,14 @@ class PostReq(BaseReq):
         else: return
 
         if not self.pool:
+            print("初始化线程池", thread_pool_size)
             self.pool = threadpool.ThreadPool(thread_pool_size)
+
+
         try:
             if enable_thread:
                 args = []
                 for data in data_list:
-                    print(data)
                     args.append(([data, self.cb], None))
                     # args.append(([post_url, data, post_json, self.__callback], None))
                 reqs = threadpool.makeRequests(self.commit_data, args)
