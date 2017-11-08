@@ -23,9 +23,9 @@ class Sync:
         self.table_prev = None
         self.new_data = []
 
-    def get(self):
+    def get(self, get_all=False):
         """
-        获取数据文件
+        获取数据
         :return: table，table_prev
         """
         self.db_now = self.req.get_db_file()
@@ -38,17 +38,20 @@ class Sync:
         try:
             # db_now不存在
             if not self.db_now or not os.path.exists(self.db_now):
-                # db_prev不存在
-                if not self.db_prev or not os.path.exists(self.db_prev):
-                    print("no file need sync")
-                    return False
+                if get_all:  # 取得全部数据
+                    if self.db_prev or not os.path.exists(self.db_prev):
+                        self.table = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+                    else:
+                        print("file not exist")
+                        return False
                 else:
-                    self.table = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+                    return False
             else:
                 self.table = DBF(self.db_now, encoding="gbk", char_decode_errors="ignore")
                 if os.path.exists(self.db_prev):
                     self.table_prev = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
             self.log.log_success("Start process, prev dbf: " + str(self.db_prev) + " now dbf:" + str(self.db_now))
+            return True
         except Exception as e:
             self.log.log_error(str(e))
             raise
@@ -61,9 +64,10 @@ class Sync:
         :param table_prev: 
         :return: new_data
         """
+
         start_time = time.time()
         skip_count = 0
-        # 原始表数据
+        # 原始数据
         table = table or self.table
         table_prev = table_prev or self.table_prev
         # 处理后的数据
@@ -79,12 +83,12 @@ class Sync:
         for record in table:
             if record['HQZQDM'] == "000000":
                 # 如果update_at不是今天，那么就设置为今天 (for data template)
-                if str(record['HQZQJC']) == time.strftime("%Y%m%d") or True:
+                if str(record['HQZQJC']) == time.strftime("%Y%m%d"):
                     updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
                     updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
                     updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
                 else:
-                    updated_at = time.strftime("%Y-%m-%dT09:09:00")
+                    updated_at = time.strftime("%Y-%m-%dT09:10:00")
                 break
 
         # read record as dict append to list
@@ -162,3 +166,5 @@ class Sync:
                 print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
+
+

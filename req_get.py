@@ -53,11 +53,14 @@ class GetReq(BaseReq):
         cache = Cache(db_list_cache)
         try:
             dblist = os.listdir(db_file_path)
-            dblist.sort()
+            # 倒序文件列表
+            # dblist.sort()
+
+            # 存在缓存更新，不存在重新写入
             if os.path.exists(db_list_cache):
-                cache.update(dblist, "0")
+                cache.update_all(dblist, "0")
             else:
-                cache.write_by_dict(dblist, "0")
+                cache.write_all(dblist, "0")
         except:
             raise
 
@@ -68,8 +71,13 @@ class GetReq(BaseReq):
         """
         cache = Cache(db_list_cache)
         try:
+            file_name = ""
             self.update_dblist_cache(db_list_cache, db_file_path)
-            return db_file_path + cache.get_and_update_item_by_value("0", "1")
+            for i in range(config.particle_size):
+                file_name = cache.get_key("0")
+            if file_name:
+                cache.update(file_name, "1")
+                return db_file_path + file_name
         except Exception as e:
             raise
 
@@ -77,6 +85,7 @@ class GetReq(BaseReq):
         """
         获取dbf数据文件路径 
         """
+        # 检查配置
         if type(config.db_file_path) is not str:db_file_path = config.db_file_path()
         else:db_file_path = config.db_file_path
 
@@ -84,8 +93,10 @@ class GetReq(BaseReq):
         else:db_list_cache = config.db_list_cache
 
         if "http://" in db_file_path or "https://" in db_file_path:
+            # 从url获取
             return self.get_db_file_from_url(config.db_url, "tmp/dbf_cache_pool/cache.dbf")
         else:
+            # 从本地获取
             if os.path.exists(db_file_path):
                 if os.path.isfile(db_file_path):  # path is file
                     return self.get_db_file_from_file(db_file_path)
@@ -106,7 +117,7 @@ class GetReq(BaseReq):
         api_url = config.api_get.format(code = code)
         # get id from cache
         if os.path.exists(id_cache):
-            id = cache.get_value_by_key(code)
+            id = cache.get_value(code)
             if id: return id[1]
         # get id from api
         response = requests.get(api_url)
@@ -115,7 +126,7 @@ class GetReq(BaseReq):
             if result['results']:
                 result['results'].sort(key=lambda x: x['updated_at'])
                 result = result['results'][-1]['id']
-                cache.put_item(code, result)
+                cache.append(code, result)
                 return result
             else:
                 return False

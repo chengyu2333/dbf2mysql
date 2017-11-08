@@ -2,7 +2,7 @@
 import time
 
 # 数据文件的文件名或文件夹名
-# db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
+#db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
 db_file_path = "../dbf/"
 
 # 数据文件列表缓存路径
@@ -20,13 +20,16 @@ api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
 post_json = False
 post_success_code = 201
 
-cycle_time = 10  # 程序扫描最小周期时间
-upload_cycle = 24  # 文件上传周期时间
+cycle_time = 7  # 程序扫描最小周期时间
+upload_cycle = 20  # 文件上传周期时间
+particle_size = 3  # 扫面粒度，1为全部，未扫描到的将跳过
+reverse_list = True  # 倒序文件列表（即优先处理最新数据）
+
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小
 
 # 超时时间
-timeout_http = 300
+timeout_http = 100
 
 # 重试等待时间（指数形式）
 silence_http_multiplier = 2

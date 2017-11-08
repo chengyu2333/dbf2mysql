@@ -19,10 +19,8 @@ def cycle_exec(cycle_time=10):
     last_time_sync = time.time()
     log = Log(print_log=config.print_log)
     data_cache = []
-    cycle_times = 0  # 循环的次数
     sync = Sync()
     while True:
-        # cycle_time += 1
         start_time_cycle = time.time()
 
         # 判断时间段
@@ -33,11 +31,14 @@ def cycle_exec(cycle_time=10):
         try:
 
             # 检查今天是否同步过，否则初始化系统
-            if not cache_last_run.get_value_by_key(time.strftime("%Y%m%d")):
+            if not cache_last_run.get_value(time.strftime("%Y%m%d")):
                 print("reset")
                 sync.reset()
+                sync.get(get_all=True)
+                data = sync.process()
+                sync.upload(data)
                 # sync.cache_id_all()  # 缓存所有Id
-                cache_last_run.put_item(time.strftime("%Y%m%d"), "1")
+                cache_last_run.append(time.strftime("%Y%m%d"), "1")
                 # sync.sync()
                 continue
 
@@ -51,7 +52,10 @@ def cycle_exec(cycle_time=10):
             #     continue
 
             # 获取待同步文件
-            sync.get()
+            if not sync.get():
+                print("sync finishd")
+                time.sleep(10)
+                continue
 
             # 直接获取待同步数据，不做缓存
             # data_cache += sync.process()
@@ -78,11 +82,11 @@ def cycle_exec(cycle_time=10):
             # 开始提交数据 (数据为1时则没有变化)
             # 第一层验证：待同步数据大于n条时则提交
             # 第二层验证：每隔t秒提交一次
-            n = 1  # 只有时间变动，不需要提交
+            n = 2  # 如果为2，表示只有时间变动，不需要提交
             t = 30
-            if len(data_cache) > n:
-                print(" ", len(data_cache) ,end="")
-                if len(data_cache) > 100:  # 超过100则立即同步
+            if len(data_cache) >= n:
+                print(" ", len(data_cache), end="")
+                if len(data_cache) > 10:  # 超过10则立即同步
                     last_time_sync = time.time()  # 重置上次同步的时间
                     sync.upload(data_cache)
                     data_cache.clear()
@@ -108,11 +112,5 @@ def cycle_exec(cycle_time=10):
 
 if __name__ == "__main__":
     print("===== synchronize start =====")
-    # sync = Sync()
-    # task = [(sync.get, None, None, 5),
-    #         (sync.process, None, None, 5),
-    #         (sync.upload,None,None,30)]
-    # cron.cycle(task)
-    # process.reset()
     cycle_exec(cycle_time=config.cycle_time)
 

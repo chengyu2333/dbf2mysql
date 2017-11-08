@@ -39,7 +39,7 @@ class PostReq(BaseReq):
         """
         # TODO 优化缓存策略
         id_cache = Cache("tmp/id_cache.txt")
-        id = id_cache.get_value_by_key(data['hqzqdm'])
+        id = id_cache.get_value(data['hqzqdm'])
         # 如果有缓存这个ID
         if id:
             url = config.api_put.format(id=id)
@@ -71,14 +71,14 @@ class PostReq(BaseReq):
             # 服务器不存在这个ID
             else:
                 # 删除这个ID的缓存
-                id_cache.remove_item_by_key(data['hqzqdm'])
+                id_cache.remove(data['hqzqdm'])
                 # raise Exception("get remote id failed")
         # 缓存里没有这个ID，POST上传
         else:
             res = requests.post(config.api_post, data=data, timeout=self._timeout_http)
             if res.status_code == 201: # post success
                 id = json.loads(res.text)['id']
-                id_cache.put_item(data['hqzqdm'], id)
+                id_cache.append(data['hqzqdm'], id)
                 if cb: cb(True, id)
                 print(" post成功\r",end="")
                 return True
