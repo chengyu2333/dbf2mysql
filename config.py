@@ -20,9 +20,9 @@ api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
 post_json = False
 post_success_code = 201
 
-cycle_time = 7  # 程序扫描最小周期时间
-upload_cycle = 20  # 文件上传周期时间
-particle_size = 3  # 扫面粒度，1为全部，未扫描到的将跳过
+cycle_time = 7  # 程序最小扫描周期时间
+upload_cycle = 20  # 文件最小上传周期时间
+particle_size = 3  # 扫面粒度，跳过n-1个中间数据
 reverse_list = True  # 倒序文件列表（即优先处理最新数据）
 
 enable_thread = True  # 启用线程
@@ -30,6 +30,8 @@ thread_pool_size = 10  # 线程池大小
 
 # 超时时间
 timeout_http = 100
+# 上传延迟
+sleep = 0.1
 
 # 重试等待时间（指数形式）
 silence_http_multiplier = 2

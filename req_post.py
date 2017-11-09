@@ -80,7 +80,7 @@ class PostReq(BaseReq):
                 id = json.loads(res.text)['id']
                 id_cache.append(data['hqzqdm'], id)
                 if cb: cb(True, id)
-                print(" post成功\r",end="")
+                print(" post成功\r", end="")
                 return True
             else:
                 if cb: cb(False, id, res)
@@ -116,6 +116,7 @@ class PostReq(BaseReq):
                     result = self.commit_data(d)
                     if result:
                         self.success_count += 1
+                    time.sleep(config.sleep)
             count = self.success_count
             self.success_count = 0
             self.processed_count = 0

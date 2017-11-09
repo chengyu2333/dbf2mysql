@@ -2,6 +2,8 @@
 import time
 import shutil
 import os
+import simpledbf
+from pandas import Series, DataFrame
 import config
 from log import Log
 from dbfread import DBF

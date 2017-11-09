@@ -69,12 +69,15 @@ class GetReq(BaseReq):
         """
         从文件夹获取数据文件路径
         """
+        # TODO 判断是不是最后一个，不是的或则采用渐进算法
         cache = Cache(db_list_cache)
         try:
-            file_name = ""
+            # 更新数据
             self.update_dblist_cache(db_list_cache, db_file_path)
-            for i in range(config.particle_size):
-                file_name = cache.get_key("0")
+            # 粒度（倒序不需要）
+            # file_name = ""
+            # for i in range(config.particle_size):
+            file_name = cache.get_key("0", reverse=True)
             if file_name:
                 cache.update(file_name, "1")
                 return db_file_path + file_name
