@@ -23,7 +23,7 @@ class Sync:
         self.table_prev = None
         self.new_data = []
 
-    def get(self,db_now, db_prev, get_all=False):
+    def get(self,db_now=None, db_prev=None, get_all=False):
         """
         获取数据
         :return: table，table_prev

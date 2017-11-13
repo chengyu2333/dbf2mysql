@@ -56,8 +56,6 @@ def cycle_exec(cycle_time=10):
                 time.sleep(10)
                 continue
 
-
-
             # 直接获取待同步数据，不做缓存
             # data_cache += sync.process()
 

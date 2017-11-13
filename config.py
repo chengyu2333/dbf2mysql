@@ -14,9 +14,10 @@ prev_file = "tmp/prev.dbf"
 time_range_sync = ""
 
 # API配置
-api_post = "http://api.chinaipo.com/markets/v1/rthq/"
-api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/"
-api_get = "http://api.chinaipo.com/markets/v1/rthq/?code={code}"
+api_host = "http://api.chinaipo.com"
+api_post = api_host + "/markets/v1/rthq/"
+api_put = api_host + "/markets/v1/rthq/{id}/"
+api_get = api_host + "/markets/v1/rthq/?code={code}"
 post_json = False
 post_success_code = 201
 

@@ -49,17 +49,14 @@ class Sync:
                 self.table = Dbf5(self.db_now, codec="gbk").to_dataframe()
                 if os.path.exists(self.db_prev):
                     self.table_prev = Dbf5(self.db_prev, codec="gbk").to_dataframe()
-            self.log.log_success("Read data spend:{time}s | prev dbf [{num_prev}]: {db_prev} | now dbf [{num_now}]:{db_now}".
+            self.log.log_success("Read data spend:{time}s | prev dbf []: {db_prev} | now dbf []:{db_now}".
                                  format(time="%.2f" % (time.time()-start_time),
                                         db_prev=str(self.db_prev),
-                                        db_now=str(self.db_now),
-                                        num_prev=len(self.table_prev),
-                                        num_now=len(self.table)))
+                                        db_now=str(self.db_now)))
             return self.table, self.table_prev
         except Exception as e:
             self.log.log_error(str(e))
             raise
-
 
     def process(self, table=None, table_prev=None):
         """
@@ -68,29 +65,35 @@ class Sync:
         :param table_prev: 
         :return: new_data
         """
-
         start_time = time.time()
         # 原始数据
         table = table or self.table
         table_prev = table_prev or self.table_prev
         # 处理对比数据
-        l = len(table_prev)
+        if not table_prev.empty:
+            l = len(table_prev)
+        else:
+            l = 0
         dl = []
         df = concat([table_prev, table], ignore_index=True).drop_duplicates().ix[l:, :]
-        for row in df.iterrows():
-            dl.append(row[1].to_dict())
 
-        # get update_at
-        for record in dl:
-            if record['HQZQDM'] == "000000":
-                # 如果update_at不是今天，那么就设置为今天 (for data template)
-                if str(record['HQZQJC']) == time.strftime("%Y%m%d"):
-                    updated_at = str(record['HQZQJC']) + str(record['HQCJBS'])
-                    updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
-                    updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
-                else:
-                    updated_at = time.strftime("%Y-%m-%dT09:10:00")
-                break
+        # updated_at = str(df[df['HQZQDM']=="000000"]['HQZQJC']) + str(df[df['HQZQDM']=="000000"]['HQCJBS'])
+        # 如果update_at不是今天，那么就设置为今天 (for data template)
+        if str(df[df['HQZQDM']=="000000"]['HQZQJC']) == time.strftime("%Y%m%d"):
+            updated_at = str(df[df['HQZQDM']=="000000"]['HQZQJC']) + str(df[df['HQZQDM']=="000000"]['HQCJBS'])
+            updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
+            updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
+        else:
+            updated_at = time.strftime("%Y-%m-%dT09:10:00")
+
+        for row in df.iterrows():
+            d = row[1].to_dict()
+            d['updated_at'] = updated_at
+            # 降低精度
+            for r in d:
+                if isinstance(d[r], float):
+                    d[r] = "%.2f" % d[r]
+            dl.append(d)
 
         # map dict
         new_data, total = map_dict(dl,
@@ -154,4 +157,3 @@ class Sync:
                 print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
-
