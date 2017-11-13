@@ -4,10 +4,8 @@ import config
 from cache import Cache
 from log import Log
 from sync import Sync
-from req import GetReq as req_get
 from cron import Cron
 from tools import in_time_range
-import os
 
 log = Log(config.print_log)
 cache_last_run = Cache("tmp/last_run.tmp")
@@ -29,6 +27,9 @@ def cycle_exec(cycle_time=10):
                 time.sleep(10)
                 continue
         try:
+            # print(sync.get("../dbf/nqhq.dbf.091025", "../dbf/nqhq.dbf.152749"))
+            # sync.process()
+            # return
 
             # 检查今天是否同步过，否则初始化系统
             if not cache_last_run.get_value(time.strftime("%Y%m%d")):
@@ -37,9 +38,7 @@ def cycle_exec(cycle_time=10):
                 sync.get(get_all=True)
                 data = sync.process()
                 sync.upload(data)
-                # sync.cache_id_all()  # 缓存所有Id
                 cache_last_run.append(time.strftime("%Y%m%d"), "1")
-                # sync.sync()
                 continue
 
             # 检查API是否正常
@@ -53,9 +52,11 @@ def cycle_exec(cycle_time=10):
 
             # 获取待同步文件
             if not sync.get():
-                print("sync finishd")
+                print("no more data need sync")
                 time.sleep(10)
                 continue
+
+
 
             # 直接获取待同步数据，不做缓存
             # data_cache += sync.process()

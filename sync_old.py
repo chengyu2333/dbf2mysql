@@ -2,13 +2,12 @@
 import time
 import shutil
 import os
-from simpledbf import Dbf5
-from pandas import concat
 import config
 from log import Log
 from dbfread import DBF
 from map_dict import map_dict
 from req import Req
+from tools import get_md5
 
 
 class Sync:
@@ -24,14 +23,18 @@ class Sync:
         self.table_prev = None
         self.new_data = []
 
-    def get(self, db_now=None, db_prev=None, get_all=False):
+    def get(self,db_now, db_prev, get_all=False):
         """
         获取数据
-        :return: DataFrame: (table，table_prev)
+        :return: table，table_prev
         """
-        start_time = time.time()
         self.db_now = db_now or self.req.get_db_file()
         self.db_prev = db_prev or config.prev_file
+        print(self.db_now)
+        print(self.db_prev)
+        # db_now文件是否存在
+        # if not self.db_now or not os.path.exists(self.db_now):
+        #     return False
 
         # 读文件表
         try:
@@ -39,27 +42,22 @@ class Sync:
             if not self.db_now or not os.path.exists(self.db_now):
                 if get_all:  # 取得全部数据
                     if self.db_prev or not os.path.exists(self.db_prev):
-                        self.table = Dbf5(self.db_prev,codec="gbk").to_dataframe()
+                        self.table = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
                     else:
                         print("file not exist")
                         return False
                 else:
                     return False
             else:
-                self.table = Dbf5(self.db_now, codec="gbk").to_dataframe()
+                self.table = DBF(self.db_now, encoding="gbk", char_decode_errors="ignore")
                 if os.path.exists(self.db_prev):
-                    self.table_prev = Dbf5(self.db_prev, codec="gbk").to_dataframe()
-            self.log.log_success("Read data spend:{time}s | prev dbf [{num_prev}]: {db_prev} | now dbf [{num_now}]:{db_now}".
-                                 format(time="%.2f" % (time.time()-start_time),
-                                        db_prev=str(self.db_prev),
-                                        db_now=str(self.db_now),
-                                        num_prev=len(self.table_prev),
-                                        num_now=len(self.table)))
-            return self.table, self.table_prev
+                    self.table_prev = DBF(self.db_prev, encoding="gbk", char_decode_errors="ignore")
+            self.log.log_success("Start process, prev dbf: " + str(self.db_prev) + " now dbf:" + str(self.db_now))
+            return True
         except Exception as e:
             self.log.log_error(str(e))
             raise
-
+        return self.table, self.table_prev
 
     def process(self, table=None, table_prev=None):
         """
@@ -70,18 +68,21 @@ class Sync:
         """
 
         start_time = time.time()
+        skip_count = 0
         # 原始数据
         table = table or self.table
         table_prev = table_prev or self.table_prev
-        # 处理对比数据
-        l = len(table_prev)
-        dl = []
-        df = concat([table_prev, table], ignore_index=True).drop_duplicates().ix[l:, :]
-        for row in df.iterrows():
-            dl.append(row[1].to_dict())
+        # 处理后的数据
+        data = []
+        data_prev = {}
+
+        # convert table_prev to dict
+        if table_prev:
+            for record in table_prev:
+                data_prev[record['HQZQDM']] = record
 
         # get update_at
-        for record in dl:
+        for record in table:
             if record['HQZQDM'] == "000000":
                 # 如果update_at不是今天，那么就设置为今天 (for data template)
                 if str(record['HQZQJC']) == time.strftime("%Y%m%d"):
@@ -92,20 +93,34 @@ class Sync:
                     updated_at = time.strftime("%Y-%m-%dT09:10:00")
                 break
 
+        # read record as dict append to list
+        for record in table:  # iteration each row
+            temp_row = {}
+            if record['HQZQDM'] in data_prev and str(record) == str(data_prev[record['HQZQDM']]):
+                skip_count += 1
+            else:
+                for field in record:  # iteration every field
+                    # 降低float精度
+                    if isinstance(record[field], float):
+                        record[field] = "%.2f" % record[field]
+                    temp_row[field] = record[field]
+                temp_row['updated_at'] = updated_at
+                data.append(temp_row)
+
         # map dict
-        new_data, total = map_dict(dl,
+        new_data, total = map_dict(data,
                                    config.map_rule['map'],
                                    config.map_rule['strict'],
                                    config.map_rule['lower'],
                                    swap=config.map_rule['swap'])
-        # update db cache
+        # update_all db cache
         if self.db_now:
             shutil.copy(self.db_now, self.db_prev)
 
         self.new_data = new_data
-        self.log.log_success("Process spend: {time}s | update at: {up_at} | new record: {new}"
-                             .format(up_at=updated_at,  new=total,
-                                     time="%.2f" % (time.time() - start_time)))
+        self.log.log_success("Process spend: {time} update_all at: {up_at}, total record: {total}, new record: {new}"
+                             .format(up_at=updated_at, total=total + skip_count, new=total,
+                                     time=time.time() - start_time))
         return new_data
 
     def upload(self, data=None):
@@ -129,7 +144,7 @@ class Sync:
             self.log.log_error(str(e))
             return False
         self.new_data = None
-        self.log.log_success("Commit finished,spend time:" + "%.2f" % (time.time() - start_time))
+        self.log.log_success("Commit finished,spend time:" + str(time.time() - start_time))
         return True
 
     def sync(self):
@@ -137,8 +152,7 @@ class Sync:
         self.process()
         self.upload()
 
-    @staticmethod
-    def reset():
+    def reset(self):
         """重置缓存"""
         # 要删除的文件列表
         del_list = ["tmp/id_cache.txt", "tmp/old_time.tmp"]
@@ -154,4 +168,5 @@ class Sync:
                 print(record["HQZQDM"], "  ", self.req.cache_id(record["HQZQDM"]))
             except Exception as e:
                 print(str(e))
+
 
