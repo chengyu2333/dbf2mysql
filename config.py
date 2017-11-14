@@ -18,16 +18,25 @@ api_host = "http://api.chinaipo.com"
 api_post = api_host + "/markets/v1/rthq/"
 api_put = api_host + "/markets/v1/rthq/{id}/"
 api_get = api_host + "/markets/v1/rthq/?code={code}"
+
+api_sort=["http://api.chinaipo.com/markets/v1/tchart/?baseIndex=all&sortBy=chng_pct&order=desc",
+      "http://api.chinaipo.com/markets/v1/tchart/?baseIndex=all&sortBy=latest_quantity&order=desc",
+      "http://api.chinaipo.com/markets/v1/tchart/?baseIndex=all&sortBy=latest_amount&order=desc",
+      "http://api.chinaipo.com/markets/v1/tchart/?baseIndex=contract&sortBy=chng_pct&order=desc",
+      "http://api.chinaipo.com/markets/v1/tchart/?baseIndex=contract&sortBy=latest_quantity&order=desc",
+      "http://api.chinaipo.com/markets/v1/tchart/?baseIndex=contract&sortBy=latest_amount&order=desc"]
+
 post_json = False
 post_success_code = 201
 
-cycle_time = 7  # 程序最小扫描周期时间
+cycle_time = 2  # 程序最小扫描周期时间
 upload_cycle = 20  # 文件最小上传周期时间
 particle_size = 3  # 扫面粒度，跳过n-1个中间数据
 reverse_list = True  # 倒序文件列表（即优先处理最新数据）
 
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小
+max_upload = 100  # 每次上传的最大数据量
 
 # 超时时间
 timeout_http = 100

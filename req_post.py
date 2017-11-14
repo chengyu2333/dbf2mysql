@@ -47,10 +47,11 @@ class PostReq(BaseReq):
             # 如果服务器存在这个ID
             if response.status_code == 200:  # api server have id
                 updated_at_remote = json.loads(response.text)['updated_at']
-                updated_at_remote = time.strptime(updated_at_remote, "%Y年%m月%d日 %H:%M:%S")
+                if updated_at_remote:
+                    updated_at_remote = time.strptime(updated_at_remote, "%Y年%m月%d日 %H:%M:%S")
                 updated_at_local = time.strptime(data['updated_at'], "%Y-%m-%dT%H:%M:%S")
                 # 如果远程update_at ＜ 待传update_at则put该数据
-                if updated_at_local and updated_at_remote < updated_at_local:
+                if True or updated_at_local and updated_at_remote < updated_at_local:
                     res = requests.put(url, data)
                     if res.status_code == 200:  # put success
                         if cb: cb(True, id)

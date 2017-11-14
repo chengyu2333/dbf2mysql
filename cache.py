@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*
 import io
 import sys
 import os
@@ -5,17 +6,14 @@ import collections
 
 
 class Cache:
-    def __init__(self, path="", type="kv"):
-        """
-        :param path: cache文件路径
-        :param type: 类型：kv型
-        """
+    def __init__(self, path=""):
         if not os.path.exists(path):
-            open(path,"w", encoding="utf-8").close()
+            open(path, "w", encoding="utf-8").close()
         self.path = path
 
-    @staticmethod
-    def __save_file(path, odict):
+    def __save_file(self, path, odict, sort=True):
+        if sort:
+            odict = self.__sort(odict, False)
         with open(path, 'w', encoding="utf-8") as f:
             f.seek(0)
             f.truncate()
@@ -38,6 +36,13 @@ class Cache:
             line = line.split(" ")
             odict[line[0]] = line[1]
         return odict
+
+    @staticmethod
+    def __sort(data, desc=True):
+        if desc:
+            return collections.OrderedDict(sorted(data.items(), key=lambda t: t[0], reverse=True))
+        else:
+            return collections.OrderedDict(sorted(data.items(), key=lambda t: t[0]))
 
     def read_all(self):
         return self.__read_file(self.path)
@@ -102,7 +107,7 @@ class Cache:
             f.write(str(key) + " " + str(value) + "\n")
             return True
 
-    def update(self, key, value):
+    def update(self, key, value, auto_append=True):
         """
         按key更新数据
         :param key: 
@@ -116,11 +121,16 @@ class Cache:
                 self.__save_file(self.path, data)
                 return True
             else:
-                return False
+                if auto_append:
+                    data[key] = value
+                    self.__save_file(self.path, data)
+                    return True
+                else:
+                    return False
         except Exception as e:
             raise
 
-    def get_key(self, value, reverse=True):
+    def get_key(self, value, reverse=False):
         """
         根据value获取一个key
         :param value: 
@@ -148,8 +158,14 @@ class Cache:
 
                 # 如果要查找的值在dbdict中
                 if value in dbdict.values():  # if record have flag 0
-                    dbpath = list(dbdict.keys())[list(dbdict.values()).index(value)]
-                    return dbpath
+                    keys = list(dbdict.keys())
+                    vi = list(dbdict.values()).index(value)
+                    dbpath = keys[vi]
+                    if vi == 0:
+                        dbpath_prev = None
+                    else:
+                        dbpath_prev = keys[vi - 1]
+                    return dbpath, dbpath_prev
         except Exception as e:
             raise
 
@@ -185,8 +201,51 @@ class Cache:
         except Exception as e:
             raise e
 
+    def sort_by_key(self, desc=True):
+        data = self.__read_file(self.path)
+        if desc:
+            data = collections.OrderedDict(sorted(data.items(), key=lambda t: t[0], reverse=True))
+        else:
+            data = collections.OrderedDict(sorted(data.items(), key=lambda t: t[0]))
+        try:
+            self.__save_file(self.path, data, False)
+            return True
+        except Exception as e:
+            raise e
 
-c = Cache("tmp/list_cache_20171108.txt")
+    def reset(self):
+        pass
+        
+    def total(self, value="1"):
+        total = 0
+        count = 0
+        try:
+            with open(self.path, 'r', encoding="utf-8") as f:
+                lines = f.readlines()
+                for line in lines:
+                    line = line.replace("\n", "")
+                    line = line.split(" ")
+                    total += 1
+                    if line[1] == str(value):
+                        count += 1
+                print("total:", total, "count:", count)
+        except Exception as e:
+            raise
+
+# c = Cache("tmp/list.txt")
+# c = Cache("tmp\list_cache_20171114.txt")
+# dbpath, dbpath_prev = c.get_key("1")
+# print(dbpath)
+# print(dbpath_prev)
+# c.update(dbpath, "1")
+# print(k)
+# c.update(k, "0")
+#
+# for d in c.read_all():
+#     print(d)
+
+
+
 # re = c.remove_item_by_key("nqhq.dbf.091049")
 # print(c.update_by_key("nqhq.dbf.145525", "2"))
 # key = c.get_key_by_value("0",reverse=True)

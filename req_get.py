@@ -65,11 +65,10 @@ class GetReq(BaseReq):
             raise
 
     # cache file list and pop File path
-    def get_db_file_from_folder(self, db_file_path, db_list_cache, desc=False):
+    def get_db_file_from_folder(self, db_file_path, db_list_cache):
         """
         从文件夹获取数据文件路径
         """
-        # TODO 判断是不是最后一个，不是的或则采用渐进算法
         cache = Cache(db_list_cache)
         try:
             # 更新数据
@@ -77,10 +76,13 @@ class GetReq(BaseReq):
             # 粒度（倒序不需要）
             # file_name = ""
             # for i in range(config.particle_size):
-            file_name = cache.get_key("0", reverse=True)
-            if file_name:
+            file_name, file_name_prev = cache.get_key("0", reverse=config.reverse_list)
+            if file_name and file_name_prev:
                 cache.update(file_name, "1")
-                return db_file_path + file_name
+                return db_file_path + file_name, db_file_path + file_name_prev
+            elif file_name:
+                cache.update(file_name, "1")
+                return db_file_path + file_name, None
         except Exception as e:
             raise
 
@@ -117,7 +119,7 @@ class GetReq(BaseReq):
         id_cache = "tmp/id_cache.txt"
         cache = Cache(id_cache)
         code = str(code)
-        api_url = config.api_get.format(code = code)
+        api_url = config.api_get.format(code=code)
         # get id from cache
         if os.path.exists(id_cache):
             id = cache.get_value(code)
@@ -133,3 +135,14 @@ class GetReq(BaseReq):
                 return result
             else:
                 return False
+
+    @staticmethod
+    def get_sort_code():
+        api_list = config.api_sort
+        sort_cache = Cache("tmp/sort_code.txt")
+        for l in api_list:
+            data = requests.get(l)
+            data = json.loads(data.text)
+            for d in data['results']:
+                sort_cache.update(d['stock_code'], "1", True)
+

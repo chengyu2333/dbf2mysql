@@ -73,4 +73,3 @@ class Cron:
 class executable:
     def __init__(self):
         pass
-
