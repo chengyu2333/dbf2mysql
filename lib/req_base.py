@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*
-import requests
 import json
-from retry import retry
-import config
-from log import Log
+
+import requests
+
+from sync.log import Log
+from sync.retry import retry
 
 
 class BaseReq:
@@ -55,22 +56,6 @@ class BaseReq:
                 print(str(e))
                 raise
         response = get_retry_inner()
-        if callback:callback(response)
-        else:self.__callback(response)
-        return response
-
-    def put_data(self,id ,data, callback=None):
-        @retry(stop_max_attempt_number=config.retry_http,
-               wait_exponential_multiplier=config.silence_http_multiplier * 1000,
-               wait_exponential_max=config.silence_http_multiplier_max * 1000)
-        def put_date_inner():
-            api_put = "http://api.chinaipo.com/markets/v1/rthq/{id}/".format(id=id)
-            try:
-                return requests.put(api_put,data)
-            except Exception as e:
-                print(str(e))
-                raise
-        response = put_date_inner()
         if callback:callback(response)
         else:self.__callback(response)
         return response

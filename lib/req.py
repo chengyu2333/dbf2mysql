@@ -1,8 +1,7 @@
 from req_post import PostReq
-from req_get import GetReq
-from cache import Cache
-import config
-import requests
+
+from sync.req_get import GetReq
+
 
 class Req(PostReq, GetReq):
     pass

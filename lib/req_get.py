@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*
-from req_base import BaseReq
-import config
-import os
 import json
-import requests
+import os
 from urllib import request
-from retry import retry
-from cache import Cache
+
+import requests
+from lib.cache import Cache
+
+import config
+from sync.req_base import BaseReq
+from sync.retry import retry
 
 
 class GetReq(BaseReq):

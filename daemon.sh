@@ -1,3 +1,5 @@
+source $HOME/.bashrc
+cd /home/user_test/dbf_sync
 while true; do
         server=`ps aux | grep main.py | grep -v grep`
         if [ ! "$server" ]; then

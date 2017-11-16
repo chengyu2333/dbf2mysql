@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*
-from req_base import BaseReq
-from tools import view_bar
-from cache import Cache
-from retry import retry
-import config
 import json
 import time
+
 import requests
-import threadpool
+from lib.cache import Cache
+
+import config
+from sync import threadpool
+from sync.req_base import BaseReq
+from sync.retry import retry
+from sync.tools import view_bar
 
 
 class PostReq(BaseReq):
