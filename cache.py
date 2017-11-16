@@ -156,16 +156,19 @@ class Cache:
                     line = line.split(" ")
                     dbdict[line[0]] = line[1]
 
+                values = list(dbdict.values())
                 # 如果要查找的值在dbdict中
-                if value in dbdict.values():  # if record have flag 0
+                if value in values:  # if record have flag 0
                     keys = list(dbdict.keys())
-                    vi = list(dbdict.values()).index(value)
+                    vi = values.index(value)
                     dbpath = keys[vi]
                     if vi == 0:
                         dbpath_prev = None
                     else:
                         dbpath_prev = keys[vi - 1]
                     return dbpath, dbpath_prev
+                else:
+                    return None, None
         except Exception as e:
             raise
 
@@ -234,6 +237,7 @@ class Cache:
 
 # c = Cache("tmp/list.txt")
 # c = Cache("tmp\list_cache_20171114.txt")
+# print(c.get_key("1"))
 # dbpath, dbpath_prev = c.get_key("1")
 # print(dbpath)
 # print(dbpath_prev)

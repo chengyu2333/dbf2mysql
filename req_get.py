@@ -83,6 +83,8 @@ class GetReq(BaseReq):
             elif file_name:
                 cache.update(file_name, "1")
                 return db_file_path + file_name, None
+            else:
+                return None, None
         except Exception as e:
             raise
 

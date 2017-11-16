@@ -15,10 +15,10 @@ cron = Cron(config.time_range_sync)
 q_data_high = queue.Queue()
 q_data_low = queue.Queue()
 
+
 # 周期执行函数
 def cycle_exec(cycle_time=10):
     last_time_sync = time.time()
-    log = Log(print_log=config.print_log)
     data_cache = []
     sync = Sync()
     while True:
@@ -53,7 +53,7 @@ def cycle_exec(cycle_time=10):
             # 获取待同步文件,如果没有新文件并且队列为空则跳过
             if not sync.get():
                 if q_data_low.empty() and q_data_low.empty():
-                    print("…", end="")
+                    print(".", end="")
                     time.sleep(1)
                     continue
 
@@ -63,25 +63,9 @@ def cycle_exec(cycle_time=10):
             # 缓存待同步数据，多批数据只保留最新的更新时间
             data = sync.process()
 
-            # 去除第一条数据
-            # if len(data) == 1:
-            #     if len(data_cache) == 0:
-            #         data_cache.append(data[0])
-            #     else:
-            #         data_cache[0] = data[0]
-            # elif len(data) > 1:
-            #     for d in data:
-            #         if d['hqzqdm'] == "000000":
-            #             if len(data_cache) == 0:
-            #                 data_cache.append(d)
-            #             else:
-            #                 data_cache[0] = d
-            #             data.remove(d)
-            #     data_cache += data
-
-            # 处理优先级，分成两个队列，上传完高优先级的队列，才能上传第优先级的队列，控制每次上传的数量为10
+            # 处理优先级，根据证券代码分成两个队列，上传完高优先级的队列，才能上传第优先级的队列，控制每次上传的数量为10
             cache_sort = Cache("tmp/sort_code.txt")
-            # 数据库大于1时则入队
+            # 数据大于1时则入队
             if len(data) > 1:
                 for d in data:
                     ishigh = cache_sort.get_value(d['hqzqdm'])
@@ -104,7 +88,6 @@ def cycle_exec(cycle_time=10):
             if data_cache:
                 sync.upload(data_cache)
                 data_cache.clear()
-
 
             # 开始提交数据 (数据为1时则没有变化)
             # 第一层验证：待同步数据大于n条时则提交
@@ -138,6 +121,6 @@ def cycle_exec(cycle_time=10):
 
 
 if __name__ == "__main__":
-    print("===== synchronize start =====")
+    print("===== synchronize start =====\n")
     cycle_exec(cycle_time=config.cycle_time)
 

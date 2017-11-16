@@ -3,6 +3,7 @@ import os
 import sys
 import time
 
+
 def get_md5(file_path):
     md5 = None
     if os.path.isfile(file_path):

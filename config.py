@@ -2,8 +2,8 @@
 import time
 
 # 数据文件的文件名或文件夹名
-#db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
-db_file_path = "../dbf/"
+db_file_path = lambda :"/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
+#db_file_path = "../dbf/"
 
 # 数据文件列表缓存路径
 db_list_cache = lambda: "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")
@@ -14,7 +14,8 @@ prev_file = "tmp/prev.dbf"
 time_range_sync = ""
 
 # API配置
-api_host = "http://api.chinaipo.com"
+#api_host = "http://api.chinaipo.com"
+api_host = "http://120.55.59.164"
 api_post = api_host + "/markets/v1/rthq/"
 api_put = api_host + "/markets/v1/rthq/{id}/"
 api_get = api_host + "/markets/v1/rthq/?code={code}"
@@ -32,7 +33,7 @@ post_success_code = 201
 cycle_time = 2  # 程序最小扫描周期时间
 upload_cycle = 20  # 文件最小上传周期时间
 particle_size = 3  # 扫面粒度，跳过n-1个中间数据
-reverse_list = True  # 倒序文件列表（即优先处理最新数据）
+reverse_list = False  # 倒序文件列表（即优先处理最新数据）
 
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小

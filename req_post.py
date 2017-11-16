@@ -85,7 +85,7 @@ class PostReq(BaseReq):
                 return True
             else:
                 if cb: cb(False, id, res)
-                self.log.log_error("\npost失败 " + str(res.status_code))
+                self.log.log_error("\npost失败 " + str(res.status_code) + res.text + "\n\n" + str(data))
                 raise Exception("post failed")
 
     # 批量提交数据

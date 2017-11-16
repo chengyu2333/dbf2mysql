@@ -41,12 +41,6 @@ class Sync:
 
         # 读文件表
         try:
-            # if get_all:
-            #     print(get_all)
-            #     if os.path.exists(get_all):
-            #         self.table = Dbf5(get_all, codec="gbk").to_dataframe()
-            #         return self.table
-            #     return False
 
             # db_now不存在
             if not self.db_now or not os.path.exists(self.db_now):
@@ -95,6 +89,9 @@ class Sync:
             l = 0
         dl = []
         df = concat([table_prev, table], ignore_index=True).drop_duplicates().ix[l:, :]
+        i = df[df['HQZQDM']=="899001"].index
+        if not i.empty:
+            df.drop([df[df['HQZQDM']=="899001"].index[0]])
 
         # 如果update_at不是今天，那么就设置为今天 (for data template)
         up_data = df[df['HQZQDM']=="000000"]['HQZQJC'].values[0]
@@ -108,9 +105,6 @@ class Sync:
 
         for row in df.iterrows():
             d = row[1].to_dict()
-            if d['HQZQDM'] == "899002":
-                print(d)
-                exit()
             d['updated_at'] = updated_at
             # 降低精度
             for r in d:
