@@ -3,6 +3,7 @@ import io
 import sys
 import os
 import collections
+from retrying import retry
 
 
 class Cache:
@@ -11,6 +12,8 @@ class Cache:
             open(path, "w", encoding="utf-8").close()
         self.path = path
 
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def __save_file(self, path, odict, sort=True):
         if sort:
             odict = self.__sort(odict, False)
@@ -47,6 +50,8 @@ class Cache:
     def read_all(self):
         return self.__read_file(self.path)
 
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def write_all(self, data, default="0"):
         """
         写缓存
@@ -65,6 +70,8 @@ class Cache:
             return True
 
     # data为list时需要指定value的default值
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def update_all(self, data, default="0"):
         """
         增量添加缓存，重复的key的将忽略
@@ -72,30 +79,18 @@ class Cache:
         :param default: data为list时指定的默认值
         :return: 
         """
-        odict = collections.OrderedDict()
-        with open(self.path, 'r+', encoding="utf-8") as f:
-            lines = f.readlines()
-            # 源数据加载到OrderedDict
-            for line in lines:
-                line = line.replace("\n", "")
-                line = line.split(" ")
-                odict[line[0]] = line[1]
-            # 遍历映射新数据
-            for item in data:
-                # 新数据不在源数据中，添加
-                if item not in odict and isinstance(data, dict):
-                    odict[item] = data[item]
-                elif item not in odict and isinstance(data, list):
-                    odict[item] = default
-            # 清空写入缓存文件
-            f.seek(0)
-            f.truncate()
-            lines = ""
-            for od in odict:
-                lines += od + " " + odict[od] + "\n"
-            f.write(lines)
-        pass
 
+        odict = self.__read_file(self.path)
+        for item in data:
+            # 新数据不在源数据中，添加
+            if item not in odict and isinstance(data, dict):
+                odict[item] = data[item]
+            elif item not in odict and isinstance(data, list):
+                odict[item] = default
+        self.__save_file(self.path, odict, sort=True)
+
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def append(self, key, value):
         """
         追加一条记录
@@ -107,6 +102,8 @@ class Cache:
             f.write(str(key) + " " + str(value) + "\n")
             return True
 
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def update(self, key, value, auto_append=True):
         """
         按key更新数据
@@ -130,48 +127,37 @@ class Cache:
         except Exception as e:
             raise
 
-    def get_key(self, value, reverse=False):
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
+    def get_key(self, value):
         """
-        根据value获取一个key
+        根据value获取一个key和相邻的key
         :param value: 
         :param reverse: 倒序获取
         :return: 
         """
         dbdict = collections.OrderedDict()
         try:
-            with open(self.path, 'r+', encoding="utf-8") as f:
-                lines = f.readlines()
-                list_tmp = []
-
-                # 源数据读入到list_tmp中
-                for line in lines:
-                    list_tmp.append(line)
-                # 倒序
-                if reverse:
-                    list_tmp.reverse()
-
-                # list_tmp读入到dbdict中
-                for line in list_tmp:
-                    line = line.replace("\n", "")
-                    line = line.split(" ")
-                    dbdict[line[0]] = line[1]
-
-                values = list(dbdict.values())
-                # 如果要查找的值在dbdict中
-                if value in values:  # if record have flag 0
-                    keys = list(dbdict.keys())
-                    vi = values.index(value)
-                    dbpath = keys[vi]
-                    if vi == 0:
-                        dbpath_prev = None
-                    else:
-                        dbpath_prev = keys[vi - 1]
-                    return dbpath, dbpath_prev
+            odict = self.__read_file(self.path)
+            values = list(odict.values())
+            # 如果要查找的值在dbdict中
+            if value in values:  # if record have flag 0
+                keys = list(odict.keys())
+                vi = values.index(value)
+                dbpath = keys[vi]
+                if vi == 0:
+                    dbpath_prev = None
                 else:
-                    return None, None
+                    dbpath_prev = keys[vi - 1]
+                return dbpath, dbpath_prev
+            else:
+                return None, None
+
         except Exception as e:
             raise
 
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def get_value(self, key):
         try:
             with open(self.path, 'r+', encoding="utf-8") as f:
@@ -186,6 +172,8 @@ class Cache:
         except Exception as e:
             raise
 
+    @retry(stop_max_attempt_number=3,
+           wait_fixed=1000)
     def remove(self, key):
         """
         按key删除记录
@@ -218,7 +206,7 @@ class Cache:
 
     def reset(self):
         pass
-        
+
     def total(self, value="1"):
         total = 0
         count = 0
@@ -257,4 +245,3 @@ class Cache:
 # print(key)
 # print(up)
 # print(c.remove_by_key("nqhq.dbf.152749"))
-
