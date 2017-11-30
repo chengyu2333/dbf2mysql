@@ -1,7 +1,6 @@
-nqhq
 logs
+data
 doc
-dbf
 __pycache__
 .idea
 *.pyc
