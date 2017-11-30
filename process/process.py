@@ -1,7 +1,7 @@
 import time
 import sqlite3
 from pandas import concat
-from lib.retry import retry
+from retrying import retry
 
 
 class Process:
@@ -30,6 +30,7 @@ class Process:
            wait_fixed=1000)
     def to_sql(self, df, db_path):
         conn = sqlite3.connect(db_path)
+        
         # if_exists : {‘fail’, ‘replace’, ‘append’}
         df.insert(len(df.columns), "status", 0)
         try:
@@ -37,10 +38,12 @@ class Process:
         except Exception as e:
             raise e
 
-    @retry(stop_max_attempt_number=3)
     def convert(self, df):
-        up_data = df[df['HQZQDM'] == "000000"]['HQZQJC'].values[0]
-        up_time = df[df['HQZQDM'] == "000000"]['HQCJBS'].values[0]
+        try:
+            up_data = df[df['HQZQDM'] == "000000"]['HQZQJC'].values[0]
+            up_time = df[df['HQZQDM'] == "000000"]['HQCJBS'].values[0]
+        except Exception:
+            return(df)
         updated_at = str(up_data) + str(up_time)
         updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
         updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)

@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*
-import io
-import sys
 import os
 import collections
 from retrying import retry

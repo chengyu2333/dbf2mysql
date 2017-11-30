@@ -3,7 +3,7 @@ import io
 import sys
 import os
 import collections
-from lib.retry import retry
+from retrying import retry
 
 
 class Cache:
