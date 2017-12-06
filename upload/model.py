@@ -1,23 +1,45 @@
-import sqlalchemy
-from sqlalchemy.orm import Session
-from sqlalchemy.ext.automap import automap_base
-from . import config
+from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
 
-engine_str = 'sqlite:///:' + config.dbf_cache
 
-print(engine_str)
-engine = sqlalchemy.create_engine(engine_str)
-session = Session(engine)
-
-# Base.metadata.tables['XXX']即为相应的表
-Base = automap_base()
-Base.prepare(engine, reflect=True)
-# 查询操作
-result = session.query(Base.classes.nqhq).all()
-# insert
-# item = Base.classes.users(name='lxq', password='1234')
-# session.add(item)
-# session.commit()
-session.close()
-
-print(result)
+class Nqhq(Base):
+    __tablename__ = 'nqhq'
+    index = Column(Integer)
+    HQZQDM = Column(String, primary_key=True)
+    HQZQJC = Column(String)
+    HQZRSP = Column(Float)
+    HQJRKP = Column(Float)
+    HQZJCJ = Column(Float)
+    HQCJSL = Column(Integer)
+    HQCJJE = Column(Float)
+    HQCJBS = Column(Integer)
+    HQZGCJ = Column(Float)
+    HQZDCJ = Column(Float)
+    HQSYL1 = Column(Float)
+    HQSYL2 = Column(Float)
+    HQJSD1 = Column(Float)
+    HQJSD2 = Column(Float)
+    HQHYCC = Column(Integer)
+    HQSJW5 = Column(Float)
+    HQSSL5 = Column(Integer)
+    HQSJW4 = Column(Float)
+    HQSSL4 = Column(Integer)
+    HQSJW3 = Column(Float)
+    HQSSL3 = Column(Integer)
+    HQSJW2 = Column(Float)
+    HQSSL2 = Column(Integer)
+    HQSJW1 = Column(Float)
+    HQSSL1 = Column(Integer)
+    HQBJW1 = Column(Float)
+    HQBSL1 = Column(Integer)
+    HQBJW2 = Column(Float)
+    HQBSL2 = Column(Integer)
+    HQBJW3 = Column(Float)
+    HQBSL3 = Column(Integer)
+    HQBJW4 = Column(Float)
+    HQBSL4 = Column(Integer)
+    HQBJW5 = Column(Float)
+    HQBSL5 = Column(Integer)
+    updated_at = Column(String, primary_key=True)
+    status = Column(Integer)

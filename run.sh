@@ -1,5 +1,5 @@
 source $HOME/.bashrc
-cd /home/user_test/dbf_sync3
+cd /home/user_test/dbf_sync
 server=`ps aux | grep run-process.py | grep -v grep`
 if [ ! "$server" ]; then
        nohup python3 run-process.py >> logs/nohup-process.log &

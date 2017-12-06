@@ -1,5 +1,5 @@
 source $HOME/.bashrc
-cd /home/user_test/dbf_sync3
+cd /home/user_test/dbf_sync
 while true; do
     server=`ps aux | grep run-process.py | grep -v grep`
     if [ ! "$server" ]; then

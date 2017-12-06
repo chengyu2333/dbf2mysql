@@ -3,7 +3,7 @@ import time
 
 # 源数据路径
 # db_file_path = "/Data/LOneClient-2.3.2.25b/sanban/data/%s/nqhq/" % time.strftime("%Y%m%d")
-db_file_path = "../nqhq/"
+db_file_path = "../dbf/"
 
 # 文件列表缓存路径
 dbf_list_cache = "tmp/list_cache_%s.txt" % time.strftime("%Y%m%d")

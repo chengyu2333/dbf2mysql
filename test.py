@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*
-from upload import model
+from upload import db
 

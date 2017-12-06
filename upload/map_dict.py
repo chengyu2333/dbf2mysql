@@ -17,6 +17,8 @@ def map_dict(data_source, map_rule, strict=False, lower=True, process_key=None, 
     total = 0
     data_result = []
     for item in data_source:  # iteration data
+        if hasattr(item, "__dict__"):
+            item = item.__dict__
         row_temp = {}
         for key in item:  # iteration filed
             new_key = None

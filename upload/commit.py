@@ -9,6 +9,9 @@ from retrying import retry
 from .log import Log
 from . import config
 
+from .db import SessionManager
+from . import model
+
 
 class Commit:
     def __init__(self,
@@ -78,25 +81,23 @@ class Commit:
         except Exception:
             raise
 
-    def verify_data(self, data, cb=None):
+    @staticmethod
+    def verify_data(data, cb=None):
         res = requests.get(config.api_code.format(code=data['hqzqdm']))
         print(res.text)
+        return res.status_code
 
     def verify_data_list(self, data_list):
         for d in data_list:
             result = self.verify_data(d)
 
-
     # 提交完毕的回调
     def cb(self, result, data=None, res=None):
-        conn = sqlite3.connect(config.dbf_cache)
-        cur = conn.cursor()
+        print(data)
+        session = SessionManager().get_session()
+        row = session.query(model.Nqhq).filter(model.Nqhq.HQZQDM==data['hqzqdm'], model.Nqhq.updated_at==data['updated_at']).one()
         if result:
-            sql = "UPDATE nqhq SET status=1 WHERE HQZQDM='%s' AND updated_at='%s'"%(data['hqzqdm'], data['updated_at'])
-            cur.execute(sql)
-            conn.commit()
+            row.status = 1
         else:
-            sql = "UPDATE nqhq SET status=-1 WHERE HQZQDM='%s' AND updated_at='%s'" % (
-            data['hqzqdm'], data['updated_at'])
-            cur.execute(sql)
-            conn.commit()
+            row.status = -1
+        session.commit()
