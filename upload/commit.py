@@ -93,6 +93,7 @@ class Commit:
 
     # 提交完毕的回调
     def cb(self, result, data=None, res=None):
+        print(data)
         session = SessionManager().get_session()
         row = session.query(model.Nqhq).filter(model.Nqhq.HQZQDM==data['hqzqdm'], model.Nqhq.updated_at==data['updated_at']).one()
         if result:

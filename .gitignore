@@ -1,6 +1,7 @@
 logs
 data
 doc
+tmp
 __pycache__
 .idea
 *.pyc
