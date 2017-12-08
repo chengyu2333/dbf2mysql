@@ -39,6 +39,8 @@ class Process:
             raise e
 
     def convert(self, df):
+        # 转换数据
+        # 新增updated_at列
         try:
             up_data = df[df['HQZQDM'] == "000000"]['HQZQJC'].values[0]
             up_time = df[df['HQZQDM'] == "000000"]['HQCJBS'].values[0]
@@ -48,24 +50,31 @@ class Process:
         updated_at = time.strptime(updated_at, "%Y%m%d%H%M%S")
         updated_at = time.strftime("%Y-%m-%dT%H:%M:%S", updated_at)
         df.insert(len(df.columns), "updated_at", updated_at)
+
+        # 降低精度
+        df = df.round(2)
         return df
 
     def filter(self, df):
         # 剔除数据
         i = df[df['HQZQDM']=="899001"].index
+        j = df[df['HQZQDM']=="000000"].index
         if not i.empty:
-            df = df.drop([df[df['HQZQDM']=="899001"].index[0]])
-        # 降低精度
-        df = df.round(2)
+            df = df.drop([i[0]])
+        if not j.empty:
+            df = df.drop([j[0]])
         return df
 
     def process(self, df_last, df):
+        # 顺序不能乱
         data = self.drop_duplicate(df_last, df)
-        data = self.filter(data)
         data = self.convert(data)
+        data = self.filter(data)
         return data
 
     def first(self, df):
         # 提取第一个文件的信息
-        data = df[df['HQZQDM']=="899001"]
+        data = df.query("HQZQDM=='899001' | HQZQDM=='000000'")
+        data = self.convert(data)
+        data = data.drop(0)
         return data
