@@ -30,7 +30,8 @@ def run():
                             config.map_rule['strict'],
                             config.map_rule['lower'],
                             swap=config.map_rule['swap'])
-            if data is not None:
+
+            if data:
                 req.commit_data_list(post_url=config.api_post,
                                      data_list=data,
                                      enable_thread=config.enable_thread,
@@ -41,7 +42,7 @@ def run():
 
             else:
                 # 检测
-                time.sleep(1)
+                time.sleep(5)
 
         except Exception as e:
             l.log_error(str(e))

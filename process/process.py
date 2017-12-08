@@ -64,3 +64,8 @@ class Process:
         data = self.filter(data)
         data = self.convert(data)
         return data
+
+    def first(self, df):
+        # 提取第一个文件的信息
+        data = df[df['HQZQDM']=="899001"]
+        return data
