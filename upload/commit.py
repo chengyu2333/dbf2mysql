@@ -98,6 +98,7 @@ class Commit:
         return row.status
 
     # 提交完毕的回调
+    @retry(stop_max_attempt_number=5, wait_fixed=100)
     def cb(self, result, data=None, res=None):
         # print(data)
         session = SessionManager().get_session()

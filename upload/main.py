@@ -7,6 +7,7 @@ from .map_dict import map_dict
 from .commit import Commit
 from .db import SessionManager
 from . import model
+from sqlalchemy.exc import OperationalError
 
 
 def run():
@@ -24,7 +25,10 @@ def run():
         try:
             session = SessionManager().get_session()
             # 升序获取，保证按时间序列同步
-            data = session.query(model.Nqhq).order_by(model.Nqhq.updated_at.asc()).filter(model.Nqhq.status == 0).limit(config.max_upload)
+            data = session.query(model.Nqhq)\
+                .order_by(model.Nqhq.updated_at.asc())\
+                .filter(model.Nqhq.status == 0)\
+                .limit(config.max_upload)
             data = map_dict(data,
                             config.map_rule['map'],
                             config.map_rule['strict'],
@@ -38,19 +42,26 @@ def run():
                                      enable_thread=config.enable_thread,
                                      thread_pool_size=config.thread_pool_size)
 
-                view_bar(session.query(model.Nqhq).filter(model.Nqhq.status >= 1).count(), session.query(model.Nqhq).count())
+                view_bar(session.query(model.Nqhq).filter(model.Nqhq.status >= 1).count(),
+                         session.query(model.Nqhq).count())
                 print(" failed:", session.query(model.Nqhq).filter(model.Nqhq.status == -1).count(), end="")
                 print(" ", data[-1]['updated_at'], end="")
 
             else:
                 # 校验数据
-                data = session.query(model.Nqhq).filter(
-                    model.Nqhq.status != 0, model.Nqhq.api_id != "").order_by(model.Nqhq.status.asc()).limit(config.max_upload)
+                data = session.query(model.Nqhq)\
+                    .filter(model.Nqhq.status != 0, model.Nqhq.api_id != "")\
+                    .order_by(model.Nqhq.status.asc())\
+                    .limit(5)
                 for d in data:
-                    print("  verify：", d.api_id, " ", req.verify_data(d.api_id), "\r", end="")
+                    print("verify:", d.api_id, " ", req.verify_data(d.api_id), "\r",  end="")
                 else:
                     time.sleep(5)
-
+        except OperationalError as e:
+            if "locked" in str(e):
+                pass
+            else:
+                l.log_error(str(e))
         except Exception as e:
             l.log_error(str(e))
         finally:
