@@ -42,4 +42,5 @@ class Nqhq(Base):
     HQBJW5 = Column(Float)
     HQBSL5 = Column(Integer)
     updated_at = Column(String, primary_key=True)
+    api_id = Column(String)
     status = Column(Integer)

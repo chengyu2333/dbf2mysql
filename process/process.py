@@ -33,6 +33,7 @@ class Process:
         
         # if_exists : {‘fail’, ‘replace’, ‘append’}
         df.insert(len(df.columns), "status", 0)
+        df.insert(len(df.columns), "api_id", "")
         try:
             df.to_sql("nqhq", conn, index=True, flavor="sqlite", if_exists="append")
         except Exception as e:

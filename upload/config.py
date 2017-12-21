@@ -8,7 +8,7 @@ dbf_cache = "data/cache_%s.sqlite" % time.strftime("%Y%m%d")
 # API配置
 api_post = "http://120.55.59.164/stock/v1/rthq/"
 api_id = "http://120.55.59.164/stock/v1/rthq/{id}/"
-api_code = "http://120.55.59.164/markets/v1/rthq/?code={code}"
+api_code = "http://120.55.59.164/stock/v1/rthq/?code={code}"
 
 enable_thread = True  # 启用线程
 thread_pool_size = 10  # 线程池大小

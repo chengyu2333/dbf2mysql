@@ -41,17 +41,17 @@ class Commit:
         if res.status_code == 201:
             # 验证服务器上是否有这条数据
             res_json = json.loads(res.text)
-            id = res_json['id']
-            res_id = requests.get(config.api_id.format(id=id))
-            if res_id.status_code == 200:
+            loc_id = res_json['id']
+            api_id = requests.head(config.api_id.format(id=loc_id))
+            if api_id.status_code == 200:
                 if cb: cb(True, data, res)
                 return True
             else:
                 if cb: cb(False, data, res)
-                raise Exception("\npost成功，但服务器上没有这条数据")
+                raise Exception("post成功，但服务器上没有这条数据")
         else:
             if cb: cb(False, data, res)
-            raise Exception("\npost失败 " + str(res.status_code) + "\n" + str(data))
+            raise Exception("post失败 " + str(res.status_code) + "\n" + str(data))
 
 
     # 批量提交数据
@@ -81,23 +81,31 @@ class Commit:
         except Exception:
             raise
 
+    # 验证数据
     @staticmethod
-    def verify_data(data, cb=None):
-        res = requests.get(config.api_code.format(code=data['hqzqdm']))
-        print(res.text)
-        return res.status_code
-
-    def verify_data_list(self, data_list):
-        for d in data_list:
-            result = self.verify_data(d)
+    def verify_data(api_id, cb=None):
+        res = requests.head(config.api_id.format(id=api_id))
+        session = SessionManager().get_session()
+        row = session.query(model.Nqhq).filter(model.Nqhq.api_id==api_id).one()
+        if res.status_code == 200:
+            row.status += 1
+        elif res.status_code == 404:
+            row.status = 0
+            row.api_id = ""
+        else:
+            raise Exception("服务器错误:" + str(res.status_code))
+        session.commit()
+        return row.status
 
     # 提交完毕的回调
     def cb(self, result, data=None, res=None):
-        print(data)
+        # print(data)
         session = SessionManager().get_session()
-        row = session.query(model.Nqhq).filter(model.Nqhq.HQZQDM==data['hqzqdm'], model.Nqhq.updated_at==data['updated_at']).one()
+        row = session.query(model.Nqhq).filter(model.Nqhq.HQZQDM==data['hqzqdm'],
+                                               model.Nqhq.updated_at==data['updated_at']).one()
         if result:
             row.status = 1
+            row.api_id = json.loads(res.text)['id']
         else:
             row.status = -1
         session.commit()

@@ -19,6 +19,9 @@ def once(path_now=None, path_last=None):
             df_now = g.read_dbf(path_now)
             df_last = g.read_dbf(path_last)
             if path_now == path_last:
+                # 上传全部
+                # data = p.process(None, df_last)
+                # 过滤第一个文件
                 data = p.first(df_last)
             else:
                 data = p.process(df_last, df_now)
