@@ -11,6 +11,7 @@ l = Log()
 
 
 def once(path_now=None, path_last=None):
+    t = time.time()
     try:
         if not path_now and not path_last:
             path_now, path_last = g.get_db_path(config.db_file_path, config.dbf_list_cache)
@@ -25,12 +26,18 @@ def once(path_now=None, path_last=None):
                 data = p.first(df_last)
             else:
                 data = p.process(df_last, df_now)
-            print('path_now:', path_now, " path_last:", path_last, " new data:", len(data))
+            print(time.strftime("%Y-%m-%d %H:%M:%S"),
+                  ' current:…', path_now[-20:],
+                  " last:…", path_last[-20:],
+                  " data:", len(data),
+                  " spend:", "%.2fs" % (time.time()-t))
             if len(data) > 0:
                 p.to_sql(data, config.dbf_cache)
         else:
             time.sleep(1)
     except Exception as e:
+
+        raise
         l.log_error(str(e))
 
 
