@@ -27,7 +27,7 @@ def run():
             # 升序获取，保证按时间序列同步
             data = session.query(model.Nqhq)\
                 .order_by(model.Nqhq.updated_at.asc())\
-                .filter(model.Nqhq.status == 0)\
+                .filter(model.Nqhq.status <= 0)\
                 .limit(config.max_upload)
             data = map_dict(data,
                             config.map_rule['map'],
@@ -47,7 +47,7 @@ def run():
                 print(" failed:", session.query(model.Nqhq).filter(model.Nqhq.status == -1).count(), end="")
                 print(" current:", data[-1]['updated_at'],
                       " now:", time.strftime("%Y-%m-%d %H:%M:%S"),
-                      " count:", str(len(data)), end="")
+                      " thread:", str(len(data)), end="")
 
             else:
                 # 校验数据
@@ -56,7 +56,7 @@ def run():
                     .order_by(model.Nqhq.status.asc())\
                     .limit(5)
                 for d in data:
-                    print("verify:", req.verify_data(d.api_id), " ", d.api_id, "\r",  end="")
+                    print(" verify:", req.verify_data(d.api_id), " ", d.api_id, "\r",  end="")
                 else:
                     time.sleep(5)
         except OperationalError as e:
